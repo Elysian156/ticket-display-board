@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../Styles/Interface.css">
+</head>
+<body>
+    <section>
+        <div class="card" data-url="./index.html">
+            <img src="" alt="">
+            <span>Atendimento</span>
+        </div>
+        <div class="card" data-url="./UserConfig.html">
+            <img src="" alt="">
+            <span>Atendimento</span>
+        </div>
+        <div class="card" data-url="">
+            <img src="" alt="">
+            <span>Customização</span>
+        </div>
+    </section>
+
+    <script>
+        const cards = document.querySelectorAll(".card");
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                var url = card.getAttribute('data-url');
+                redirectTo(url);
+            });
+        });
+
+        function redirectTo(url) {
+            window.location.href = url;
+        }
+    </script>
+</body>
+</html>
