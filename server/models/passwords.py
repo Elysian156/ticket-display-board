@@ -45,7 +45,6 @@ def fetchPasswords():
   if(passwords):
     passwordsList = list()
     for password in passwords:
-      print(password)
       passwordsList.append({
         'id': password[0],
         'order': password[1],
@@ -59,3 +58,20 @@ def fetchPasswords():
       })
     return passwordsList
   return []
+
+def fecthOnePasswordByCode(password):
+  passwordsList = fetchPasswords()
+  findedPassword = ""
+  for item in passwordsList:
+    splitedPassword = item["unformatedPassword"].split('.')
+    formatedPassword = splitedPassword[0] + splitedPassword[1] + splitedPassword[2]
+    findedPassword = item if formatedPassword == password else findedPassword
+
+  print(findedPassword)
+  return findedPassword
+
+def checkoutPassword(idPassword):
+  nowDate = datetime.now()
+  query = f"UPDATE `passwords` SET `date_attended` = '{nowDate}' WHERE `passwords`.`id` = {idPassword};"
+  databaseCursor.execute(query)
+  database.commit()
