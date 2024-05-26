@@ -9,6 +9,7 @@ from models.passwords import fetch_last_password, createPassword, fetchPasswords
 
 from utils.generate_password import generatePassword
 from utils.reorder_queue_by_priority import organizeQueue
+from utils.reorder_boxes import reorderBoxes
 
 from lib.json import createJson, readJson
 
@@ -88,12 +89,32 @@ def create_password():
     return jsonify({ 'id': last_inserted_id, 'password': password["formatedPassword"] }), 201
   return jsonify({ 'message': "Não foi possível cadastrar uma nova senha" }), 400
 
-@app.route('/get_numbers', methods=['GET'])
-def get_numbers():
+@app.route('/api/passwords/next', methods=['GET'])
+def get_next_password():
+  dataJson = readJson()
+  queue = dataJson["queue"]
+  boxes = dataJson["boxes"]
+  if(len(queue) == 0):
+    return jsonify({ 'message': "Não há ninguém na fila de espera" }), 200
+  lotacao = 0
+  for box in boxes:
+    lotacao += 1 if box != 0 else 0
+  
+  if(lotacao == 5):
+    return jsonify({ 'message': "Aguarde liberação" }), 400
+  index, reception_number, fifo, boxes = reorderBoxes(data=dataJson, index=0)
 
+  queue.pop(index)
+  dataJson = {
+    'boxes': boxes,
+    'queue': queue
+  }
+  createJson(data=json.dumps(dataJson))
+  
+  appointment_number = fifo[0] + fifo[1] + fifo[2]
   response_data = {
-      'appointment_number': "NN0001",
-      'reception_number': "2"
+      'appointment_number': appointment_number,
+      'reception_number': reception_number
   }
   return jsonify(response_data)
   

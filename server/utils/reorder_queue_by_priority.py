@@ -39,4 +39,11 @@ def organizeQueue(passwords):
       reordered.append(normalPasswords[indexN])
       indexN += 1
 
-  return reordered
+  duplicados = set()
+  fixedReordered = []
+  for item in reordered:
+    if item not in duplicados:
+      fixedReordered.append(item)
+      duplicados.add(item)
+
+  return fixedReordered
