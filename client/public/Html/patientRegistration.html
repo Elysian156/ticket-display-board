@@ -69,21 +69,25 @@
         </table>
     </aside>
     <section>
-        <form action="">
+        <form class="patient-registration-form">
             <fieldset>
                 <h2>Registro de Pacientes</h2>
                 <!-- Validar se o CPF já existe e completar outros campos se for o caso, adicionar mascara de input -->
-                <label for="input-cpf">CPF:</label>
-                <input type="text" name="input-cpf" id="input-cpf" placeholder="Digite o CPF" required>
-    
-                <label for="input-cpf">Nome:</label>
-                <input type="text" name="input-name" id="input-name" placeholder="Nome Completo" required>
-    
-                <label for="input-birthday" class="halfwidth">Aniversário:</label>
-                <input type="date" name="input-birthday" id="input-birthday" class="halfwidth" min="2000-01-01" required>
+                <label for="cpf">CPF:</label>
+                <div class="cpf_search">
+                    <input type="text" name="cpf" id="cpf" placeholder="Digite o CPF" required maxlength="14" class="maskcpf">
+                    <img src="../Images/pesquisar-alt.svg" alt="" id="search-cpf">
+                </div>
 
+    
+                <label for="name">Nome:</label>
+                <input type="text" name="name" id="name" placeholder="Nome Completo" required class="onlyletters">
+    
+                <label for="date_birthday" class="halfwidth">Aniversário:</label>
+                <input type="date" name="date_birthday" id="date_birthday" class="halfwidth" min="2000-01-01" required>
+<!-- 
                 <label for="phone" class="">Celular:</label>
-                <input type="tel" id="phone" name="phone" placeholder=" (00) 00000-0000"/>
+                <input type="tel" id="phone" name="phone" placeholder=" (00) 00000-0000"/> -->
 
                 <!-- Modificar para se tornar multiple e manter uma interação agradavel -->
                 <label for="priority">Elegibilidade para Fila Preferencial</label>
@@ -114,14 +118,30 @@
                         <option value="cronico">Pessoa com Doença Crônica</option>
                         <option value="outro">Outro</option>
                     </optgroup>
-                </select>
+                </select>  
+                <label>Nivel de urgencia</label>
+                <div class="urgency-level">
+                    <input type="radio" id="emergency" name="urgency" value="E">
+                    <label for="emergency" class="circle emergency">Emergência</label>
+
+                    <input type="radio" id="urgency" name="urgency" value="U">
+                    <label for="urgency" class="circle urgency">Urgência</label>
+
+                    <input type="radio" id="little-urgent" name="urgency" value="P">
+                    <label for="little-urgent" class="circle little-urgent">Pouco Urgente</label>
+
+                    <input type="radio" id="not-urgent" name="urgency" value="N">
+                    <label for="not-urgent" class="circle not-urgent">Não Urgente</label>
+
+                </div>
 
                 <button type="submit" id="submit-patient">Enviar</button>
             </fieldset>
-            
         </form>
     </section>
 
     <img src="" alt="" id="">
+    <script src="../JS/patientRegistration.js" type="module"></script>
+    <script src="../JS/inputMasks.js"></script>
 </body>
 </html>

@@ -26,3 +26,11 @@ def getUserById(userId):
   databaseCursor.execute(query)
   user = databaseCursor.fetchall()
   return user
+
+
+
+def getUserByCPF(cpf):
+  query = f"SELECT * FROM users WHERE cpf = '{cpf}'"
+  databaseCursor.execute(query)
+  user = databaseCursor.fetchall()
+  return user

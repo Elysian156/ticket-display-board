@@ -97,13 +97,13 @@ function notifyStorageChange() {
     }
 }
 
-// Evento para limpar o localStorage e recarregar a página quando a tecla '=' é pressionada
-document.addEventListener('keydown', (event) => {
-    if (event.key === '=') {
+document.querySelector("#reset").addEventListener('click', (event) => {
+    if (confirm("Você tem certeza?")) {
         localStorage.clear();
         location.reload();
-        console.log('%cLocalStorage(Status): Cleared', 'color: green');
+        console.log('%cLocalStorage(Status): Cleared', 'color: green');       
     }
+
 
 });
 

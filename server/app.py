@@ -3,13 +3,14 @@ from flask_cors import CORS
 
 import json
 
-from models.fetchUsers import fetchUsers, getUserById
+from models.fetchUsers import fetchUsers, getUserById, getUserByCPF
 from models.createNewUser import createUser
 from models.passwords import fetch_last_password, createPassword, fetchPasswords
 
 from utils.generate_password import generatePassword
 from utils.reorder_queue_by_priority import organizeQueue
 from utils.reorder_boxes import reorderBoxes
+
 
 from lib.json import createJson, readJson
 
@@ -28,7 +29,7 @@ def create_user():
   date_birthday = userData["date_birthday"]
   name = userData["name"]
   is_especial = userData["is_especial"]
-  deficiency = userData.get("deficiency", " ")
+  deficiency = userData.get("eligibility_reason", " ")
   isCreatedUser = createUser(name, cpf, date_birthday, is_especial, deficiency)
 
   if(isCreatedUser):
@@ -36,9 +37,10 @@ def create_user():
   else:
     return jsonify({ 'message': 'Não foi possível cadastrar o usuário' }), 400
   
-@app.route('/api/users/<int:userId>', methods=["GET"])
-def search_user(userId):
-  user = getUserById(userId)[0]
+
+@app.route('/api/users/<cpf>', methods=["GET"])
+def search_user(cpf):
+  user = getUserByCPF(cpf)[0]
   if(user):
     user_id = user[0]
     name = user[1]
@@ -119,4 +121,4 @@ def get_next_password():
   return jsonify(response_data)
   
 if __name__ == "__main__":
-  app.run(debug=True)
+  app.run(debug=True, port=5000)

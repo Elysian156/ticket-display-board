@@ -29,62 +29,61 @@ aside{
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
     overflow-y: hidden;
+    padding: 1rem;
+    gap: 1rem;
 }
 
-aside h4{
+table {
+    height: fit-content;
+    width: 90%;
+    border-collapse: collapse;
+    box-shadow: 0 0 8px -3px rgba(0, 0, 0, 0.4);
+    border-radius: .5rem;
+}
+
+aside h3{
+    font-size: 1rem;
     color: var(--layout-text-color);
 
 }
 
-.logo{width: 120px; height: 120px;}
-
-table {
-    width: 90%;
-    border-collapse: collapse;
+.logo{
+    width: 120px; 
+    height: 120px;
 }
 
-
-thead tr{
-    border: 1px solid var(--layout-primary-color);
+thead tr {
+    background:  var(--layout-primary-color);
 }
 
-tr:nth-child(n + 8) {
+tr:nth-child(n + 10) {
     border: none;
     visibility: hidden;
 }
 
-th, td {
-    padding: 8px;
-    text-align: left;
+/* tr:nth-child(even) {
+
+} */
+
+th,
+td,
+tr {
+    padding: .5rem;
     text-align: center;
 }
 
 th {
-    background-color: var(--layout-primary-color);
-    color: var(--layout-text-color);
-}
-td{
-    background-color: var(--layout-secondary-color);
+    background-color: var(--background-color);
     color: var(--layout-text-color);
 }
 
-
-.info{
-    width: 100%;
+td {
     height: fit-content;
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    gap: .5rem;
+    font-size: .7rem;
     color: var(--layout-text-color);
 }
-.info span{
-    min-width: 75px;
-    width: fit-content;
-    text-align: center;
-}
+
 
 section{
     width: 70vw;
@@ -107,7 +106,6 @@ section{
 }
 
 .carousel-ads{
-    height: 80%;
     overflow: hidden;
     display: flex;
 }
@@ -125,6 +123,23 @@ section{
     aspect-ratio: 16 / 9;
     line-height: 0;
     display: block;
+}
+
+.info {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: .5rem;
+    padding: 5px;
+    color: var(--layout-text-color);
+}
+
+.info span {
+    min-width: 75px;
+    width: fit-content;
+    text-align: center;
 }
 
 .ticket-highlight{
