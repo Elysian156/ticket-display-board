@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
     `id` int AUTO_INCREMENT NOT NULL,
     `name` varchar(255) NOT NULL,
-    `cpf` varchar(11) NOT NULL UNIQUE,
+    `cpf` varchar(14) NOT NULL UNIQUE,
     `date_birthday` date NOT NULL,
 		`is_especial` BOOLEAN DEFAULT false,
 		`deficiency` text,
