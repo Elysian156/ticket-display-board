@@ -49,12 +49,28 @@ export async function fetchUserDataById(userId) {
 
         if (!response.ok) {
             throw new Error('Network response was not ok');
-        }
+        } 
 
         console.log('FetchUserDataById(Status): %cSuccess', 'color: green');
         return response.json();
     } catch (error) {
         console.log(`%cFetchUserDataById(Error): ${error.message}`, 'color: red');
+        throw error;  
+    }
+}
+
+export async function registerQueue(data){
+    try{
+        const response = await fetch('http://localhost:5000/api/passwords/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+    }
+    catch (error) {
+        console.log(`%cRegisterQueue(Error): ${error.message}`, 'color: red');
         throw error;  
     }
 }

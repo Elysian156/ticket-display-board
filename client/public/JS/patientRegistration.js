@@ -1,9 +1,11 @@
 import { registerUser } from './apiCalls.js';
 import { fetchUserDataByCPF} from './apiCalls.js'
-import { fetchUserDataById } from './apiCalls.js';
+import { registerQueue } from './apiCalls.js';
 
 const form = document.querySelector(".patient-registration-form")
 const inputcpf = document.querySelector("#cpf")
+const submitQueue = document.querySelector("#submit-queue")
+
 
 inputcpf.addEventListener('input', function() {
     const inputValue = inputcpf.value;
@@ -18,18 +20,28 @@ inputcpf.addEventListener('input', function() {
                 const month = String(dateObject.getMonth() + 1).padStart(2, '0');
                 const day = String(dateObject.getDate()).padStart(2, '0'); 
                 const formattedDate = `${year}-${month}-${day}`;
-    
-                console.log(data)
+
                 document.querySelector("#name").value = data.name
                 document.querySelector("#date_birthday").value = formattedDate
                 document.querySelector("#eligibility-reason").value = data.deficiency
 
+                const inputurgency = document.querySelector('input[name="urgency"]')
                 document.querySelector("#submit-patient").disabled = true;
-
+                
+                const queueData = {
+                    user_id: data.id,
+                    // name: data.name,
+                    // deficiency: data.eligibility_reason,
+                    is_priority: data.is_especial,
+                    urgency_level: inputurgency.value,
+                };
+                console.log(queueData)
+                submitQueue.classList.remove('hidden')
+                submitQueue.addEventListener('click', registerQueue(queueData))
             }
         })
         .catch(error => {
-            // Este código será executado se houver um erro no fetch
+
             console.log('Error fetching user data:', error);
         });
     }

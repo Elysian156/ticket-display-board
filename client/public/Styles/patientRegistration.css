@@ -203,13 +203,16 @@ input[type="radio"]:checked + label {
     background-color: #4189e0;
     color: #ffffff;
 }
-button#submit-patient{
+button[type=submit]{
     margin-top: 5%;
     color: #FFFFFF;
     background-color: var(--color2);
 }
+button.hidden{
+    display: none;
+    visibility: hidden;
+}
 
-
-input.halfwidth, label.halfwidth{
+input.halfwidth, label.halfwidth, button.halfwidth{
     width: 50%;
 }
