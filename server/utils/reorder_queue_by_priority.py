@@ -1,7 +1,7 @@
 def organizeQueue(passwords):
   def splitPassword(password):
     priorityLevel = password.split(".")[0]
-    urgencyLevel = password.split(".")[1]
+    urgencyLevel = password.split(".")[1].upper()
     callOrder = int(password.split(".")[2])
 
     return priorityLevel, urgencyLevel, callOrder

@@ -17,3 +17,7 @@ venv.bak/
 # Tests
 /tests
 test.py
+
+client_secret.json
+credentials.json
+token.json

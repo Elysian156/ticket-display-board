@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS `painel_database`
+DROP DATABASE IF EXISTS `painel_database`;
 
-CREATE DATABASE IF NOT EXISTS `painel_database`
+CREATE DATABASE IF NOT EXISTS `painel_database`;
 
-USE `painel_database`
+USE `painel_database`;
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `users` (
     `cpf` varchar(14) NOT NULL UNIQUE,
     `date_birthday` date NOT NULL,
 		`is_especial` BOOLEAN DEFAULT false,
-		`deficiency` text,
+		`eligibility_reason` text,
     PRIMARY KEY (`id`)
 );
 

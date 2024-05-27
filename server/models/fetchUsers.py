@@ -16,7 +16,7 @@ def fetchUsers():
         'cpf': item[2],
         'date_birthday': item[3],
         'is_especial': item[4],
-        'deficiency': item[5]
+        'eligibility_reason': item[5]
       }
     )
   return users
