@@ -10,3 +10,10 @@ def readJson():
   file.close()
 
   return data
+
+def returnBoxesAndQueue():
+  dataJson = readJson()
+  boxes = dataJson["boxes"]
+  queue = dataJson["queue"]
+
+  return [boxes, queue]
