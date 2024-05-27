@@ -60,14 +60,13 @@ def fetchPasswords():
   return []
 
 def fecthOnePasswordByCode(password):
+  print(password)
   passwordsList = fetchPasswords()
   findedPassword = ""
   for item in passwordsList:
     splitedPassword = item["unformatedPassword"].split('.')
     formatedPassword = splitedPassword[0] + splitedPassword[1] + splitedPassword[2]
     findedPassword = item if formatedPassword == password else findedPassword
-
-  print(findedPassword)
   return findedPassword
 
 def checkoutPassword(idPassword):
@@ -75,3 +74,12 @@ def checkoutPassword(idPassword):
   query = f"UPDATE `passwords` SET `date_attended` = '{nowDate}' WHERE `passwords`.`id` = {idPassword};"
   databaseCursor.execute(query)
   database.commit()
+
+def findPasswordWithPassword(password):
+  query = f"SELECT * FROM passwords where `unformated_password` = '{password}'"
+  databaseCursor.execute(query)
+  findedUserIdInPassword = databaseCursor.fetchall()[0][5]
+  queryUsers = f"SELECT name, eligibility_reason FROM users WHERE id = '{findedUserIdInPassword}'"
+  databaseCursor.execute(queryUsers)
+  user = databaseCursor.fetchall()[0]
+  return user

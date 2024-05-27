@@ -1,7 +1,6 @@
 def reorderBoxes(data, index):
   queue = data["queue"]
   boxes = data["boxes"]
-  print(len(queue))
   if(index < len(queue)):
     proximoDaFila = queue[index]
     fifo = proximoDaFila.split('.')

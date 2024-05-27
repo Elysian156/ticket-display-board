@@ -5,7 +5,7 @@ import json
 
 from models.fetchUsers import fetchUsers, getUserByCPF
 from models.createNewUser import createUser
-from models.passwords import fetch_last_password, createPassword, fetchPasswords, fecthOnePasswordByCode, checkoutPassword
+from models.passwords import fetch_last_password, createPassword, fetchPasswords, fecthOnePasswordByCode, checkoutPassword, findPasswordWithPassword
 
 from utils.generate_password import generatePassword, formatPassword
 from utils.reorder_queue_by_priority import organizeQueue
@@ -113,9 +113,13 @@ def get_next_password():
   
   appointment_number = fifo[0] + fifo[1] + fifo[2]
 
+  [name, eligibility_reason] = findPasswordWithPassword(f"{fifo[0]}.{fifo[1]}.{fifo[2]}")
+
   response_data = {
       'appointment_number': appointment_number,
-      'reception_number': reception_number
+      'reception_number': reception_number,
+      'name': name,
+      'eligibility_reason': eligibility_reason
   }
   return jsonify(response_data)
 

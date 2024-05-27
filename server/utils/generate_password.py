@@ -28,7 +28,5 @@ def generatePassword(isPriority, levelUrgency, callOrder):
   return { 'password': password, 'formatedPassword':  formatedPassword}
 
 def formatPassword(unformatedPassword):
-  print("AAAAAAAAAAAAAAAAaaaa")
-  print(unformatedPassword)
   splitedPassword = unformatedPassword.split('.')
   return splitedPassword[0] + splitedPassword[1] + splitedPassword[2]
