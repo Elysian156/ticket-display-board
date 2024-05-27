@@ -100,6 +100,7 @@ def get_next_password():
     lotacao += 1 if box != 0 else 0
   
   index, reception_number, fifo, boxes = reorderBoxes(data=dataJson, index=0)
+  print(reception_number)
   if(lotacao == 5 or reception_number == -1):
     return jsonify({ 'message': "Aguarde liberação" }), 400
 
@@ -111,6 +112,7 @@ def get_next_password():
   createJson(data=json.dumps(dataJson))
   
   appointment_number = fifo[0] + fifo[1] + fifo[2]
+
   response_data = {
       'appointment_number': appointment_number,
       'reception_number': reception_number
