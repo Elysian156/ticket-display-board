@@ -3,16 +3,15 @@ from flask_cors import CORS
 
 import json
 
-from models.fetchUsers import fetchUsers, getUserById, getUserByCPF
+from models.fetchUsers import fetchUsers, getUserByCPF
 from models.createNewUser import createUser
-from models.passwords import fetch_last_password, createPassword, fetchPasswords
+from models.passwords import fetch_last_password, createPassword, fetchPasswords, fecthOnePasswordByCode, checkoutPassword, findPasswordWithPassword
 
-from utils.generate_password import generatePassword
+from utils.generate_password import generatePassword, formatPassword
 from utils.reorder_queue_by_priority import organizeQueue
 from utils.reorder_boxes import reorderBoxes
 
-
-from lib.json import createJson, readJson
+from lib.json import createJson, readJson, returnBoxesAndQueue
 
 app = Flask(__name__)
 CORS(app)
@@ -29,7 +28,7 @@ def create_user():
   date_birthday = userData["date_birthday"]
   name = userData["name"]
   is_especial = userData["is_especial"]
-  deficiency = userData.get("eligibility_reason", " ")
+  deficiency = userData.get("deficiency", " ")
   isCreatedUser = createUser(name, cpf, date_birthday, is_especial, deficiency)
 
   if(isCreatedUser):
@@ -37,7 +36,6 @@ def create_user():
   else:
     return jsonify({ 'message': 'Não foi possível cadastrar o usuário' }), 400
   
-
 @app.route('/api/users/<cpf>', methods=["GET"])
 def search_user(cpf):
   user = getUserByCPF(cpf)[0]
@@ -76,15 +74,14 @@ def create_password():
 
     if(len(lastPasswords) > 0):
       for item in lastPasswords:
-        oldQueue.append(item["unformatedPassword"])
+        if((item["date_attended"] == None) and (not item["unformatedPassword"] in lastJson["boxes"])):
+          oldQueue.append(item["unformatedPassword"])
 
     reorderedQueue = organizeQueue(oldQueue)
     data = {
       'boxes': lastJson['boxes'],
       'queue': [*reorderedQueue]
     }
-
-    print(data)
 
     dataJson = json.dumps(data)
     createJson(data=dataJson)
@@ -102,9 +99,10 @@ def get_next_password():
   for box in boxes:
     lotacao += 1 if box != 0 else 0
   
-  if(lotacao == 5):
-    return jsonify({ 'message': "Aguarde liberação" }), 400
   index, reception_number, fifo, boxes = reorderBoxes(data=dataJson, index=0)
+  print(reception_number)
+  if(lotacao == 5 or reception_number == -1):
+    return jsonify({ 'message': "Aguarde liberação" }), 400
 
   queue.pop(index)
   dataJson = {
@@ -114,11 +112,70 @@ def get_next_password():
   createJson(data=json.dumps(dataJson))
   
   appointment_number = fifo[0] + fifo[1] + fifo[2]
+
+  [name, eligibility_reason] = findPasswordWithPassword(f"{fifo[0]}.{fifo[1]}.{fifo[2]}")
+
   response_data = {
       'appointment_number': appointment_number,
-      'reception_number': reception_number
+      'reception_number': reception_number,
+      'name': name,
+      'eligibility_reason': eligibility_reason
   }
   return jsonify(response_data)
+
+@app.route('/api/passwords/checkout/<password>', methods=["PATCH"])
+def password_checkout(password):
+  findedPassword = fecthOnePasswordByCode(password)
   
+  if(len(findedPassword) <= 0):
+    return jsonify({ 'message': "Senha não encontrada" }), 400
+  
+  elif(findedPassword["date_attended"] != None):
+    return jsonify({ 'message': "Essa senha já foi atendida" }), 400
+  
+  dataFromJson = readJson()
+  queue = dataFromJson["queue"]
+  boxes = dataFromJson["boxes"]
+
+  formatedQueue = []
+  for item in queue:
+    formatedQueue.append(formatPassword(item))
+  
+  formatedBoxes = []
+  for item in boxes:
+    formatedBoxes.append(formatPassword(item) if item != 0 else item)
+
+
+  if(password in formatedQueue and not password in formatedBoxes):
+    return jsonify({ 'message': "Ainda está na fila de espera" }), 400
+  
+  checkoutPassword(findedPassword["id"])
+  boxes[formatedBoxes.index(password)] = 0
+
+  data = {
+    'boxes': boxes,
+    'queue': queue
+  }
+
+  createJson(data=json.dumps(data))
+
+  return jsonify(), 204
+
+@app.route('/api/passwords/end', methods=["GET"]) 
+def end():
+  [boxes, queue] = returnBoxesAndQueue()
+
+  isHavePasswordInBoxes = False
+  for item in boxes:
+    isHavePasswordInBoxes = True if item != 0 else isHavePasswordInBoxes
+
+  if(isHavePasswordInBoxes):
+    return jsonify({ 'message': "Ainda há pessoas sendo atendidas" }), 400
+
+  if(len(queue) > 0):
+    return jsonify({ 'message': "Ainda há pessoas para serem atendidas" }), 400
+  
+
+  return jsonify({ "link_planilha": "https://docs.google.com/spreadsheets/d/1kdCSm6NCydh3mfUBuYATwlRnl_hbxQYYEUoUkJ0xdT8/edit?usp=sharing" })
 if __name__ == "__main__":
-  app.run(debug=True, port=5000)
+  app.run(debug=True)
