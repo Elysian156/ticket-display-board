@@ -33,7 +33,7 @@ current_date = datetime.now().date()
 current_date_iso = current_date.isoformat()
 
 # Path to the JSON file
-database_file_path = 'D:/GitHub/ticket-display-board/server/database/spreadsheet_database.json'
+database_file_path = '../database/spreadsheet_database.json'
 
 # Load existing data
 if os.path.exists(database_file_path):
@@ -60,7 +60,6 @@ def fetching_data():
     id_list = list()
     name_list = list()
     cpf_list = list()
-    rg_list = list()
     birthday_list = list()
     special_list = list()
     deficiency_list = list()
@@ -80,28 +79,22 @@ def fetching_data():
                 item[2]
             }
         )
-        rg_list.append(
-            {
-                item[3]
-            }
-        )
         birthday_list.append(
             {
-                item[4].strftime('%d/%m/%Y')
+                item[3].strftime('%d/%m/%Y')
             }
         )
         special_list.append(
             {
-                item[5]
+                item[4]
             }
         )
         deficiency_list.append(
             {
-                item[6]
+                item[5]
             }
         )
-    print(id_list)
-    return id_list, name_list, cpf_list, rg_list, birthday_list, special_list, deficiency_list
+    return id_list, name_list, cpf_list, birthday_list, special_list, deficiency_list
 
 
 def next_available_row(worksheet):
@@ -120,12 +113,10 @@ def updateSpreadsheet():
 worksheet.clear()
 worksheet.update_cell(1, 1, "CPF")
 worksheet.update_cell(1, 2, "Nome")
-worksheet.update_cell(1, 3, "RG")
-worksheet.update_cell(1, 4, "Nascimento")
-worksheet.update_cell(1, 5, "Urgência")
-worksheet.update_cell(1, 6, "Prioridade")
-worksheet.update_cell(1, 7, "Deficiência")
-worksheet.update_cell(1, 8, "ID")
+worksheet.update_cell(1, 3, "Nascimento")
+worksheet.update_cell(1, 4, "Urgência")
+worksheet.update_cell(1, 5, "Deficiência")
+worksheet.update_cell(1, 6, "ID")
 next_row = next_available_row(worksheet)
 
 """Este código necessita que os valores de CPF estejam preenchidos
@@ -133,7 +124,7 @@ de acordo, caso não estejam este código a planilha irá 'despedaçar'"""
 
 # Atualizando lista de id, valor de coluna 11
 
-[id_list, name_list, cpf_list, rg_list, birthday_list, special_list, deficiency_list ] = fetching_data()
+[id_list, name_list, cpf_list, birthday_list, special_list, deficiency_list ] = fetching_data()
 
 '''id_list = [1,2,3]
 deficiency_list = ["Visual", "Auditiva", "Nenhuma"]
@@ -144,30 +135,24 @@ cpf_list = ["12345678958","56789412390","45632187960"]'''
 
 
 for index, item in enumerate(id_list):
-    worksheet.update_acell("H{}".format(next_row), *id_list[index])
+    worksheet.update_acell("F{}".format(next_row), *id_list[index])
     next_row = int(next_row) + 1
 
 
 next_row = next_available_row(worksheet)
 for index, item in enumerate(deficiency_list):
-    worksheet.update_acell("G{}".format(next_row), *deficiency_list[index])
+    worksheet.update_acell("E{}".format(next_row), *deficiency_list[index])
     next_row = int(next_row) + 1
 
 next_row = next_available_row(worksheet)
 for index, item in enumerate(special_list):
-    worksheet.update_acell("F{}".format(next_row), *special_list[index])
+    worksheet.update_acell("D{}".format(next_row), *special_list[index])
     next_row = int(next_row) + 1
 
 next_row = next_available_row(worksheet)
 for index, item in enumerate(birthday_list):
-    worksheet.update_acell("D{}".format(next_row), *birthday_list[index])
+    worksheet.update_acell("C{}".format(next_row), *birthday_list[index])
     next_row = int(next_row) + 1
-
-next_row = next_available_row(worksheet)
-for index, item in enumerate(rg_list):
-    worksheet.update_acell("C{}".format(next_row), *rg_list[index])
-    next_row = int(next_row) + 1
-
 
 next_row = next_available_row(worksheet)
 for index, item in enumerate(name_list):
@@ -184,4 +169,3 @@ for index, item in enumerate(cpf_list):
 if __name__ == "__main__":
     fetching_data()
     updateSpreadsheet()
-next_row = next_available_row(worksheet)
