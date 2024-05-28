@@ -11,15 +11,14 @@
         <div class="counter-display">
             <div>
                 <span>Senha:</span>
-                <h1 class="current-appointment-number">NN0011</h1>
+                <h1 class="current-appointment-number"></h1>
             </div>
             <div>
                 <span>Guichê:</span>
-                <h1 class="current-reception-number">1</h1>
+                <h1 class="current-reception-number"></h1>
             </div>
         </div>   
-        <div class="alert-condition">
-        </div>  
+        <div class="alert-condition"></div>  
         <table>
             <h4>Últimas Chamadas</h4>
             <thead>
@@ -28,43 +27,11 @@
                     <th><h4>Guichê</h4</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
+            <tbody class="table-body">
+                <!-- <tr>
                     <td>N0010</td>
                     <td>5</td>
-                </tr>
-                <tr>
-                    <td>N0009</td>
-                    <td>4</td>
-                </tr>
-                <tr>
-                    <td>N0008</td>
-                    <td>3</td>
-                </tr>
-                <tr>
-                    <td>N0007</td>
-                    <td>3</td>
-                </tr>
-                <tr>
-                    <td>N0006</td>
-                    <td>2</td>
-                </tr>
-                <tr>
-                    <td>N0005</td>
-                    <td>1</td>
-                </tr>
-                <tr>
-                    <td>N0004</td>
-                    <td>5</td>
-                </tr>
-                <tr>
-                    <td>N0003</td>
-                    <td>4</td>
-                </tr>
-                <tr>
-                    <td>N0002</td>
-                    <td>3</td>
-                </tr>
+                </tr> -->
             </tbody>
         </table>
     </aside>
@@ -91,8 +58,9 @@
 
                 <!-- Modificar para se tornar multiple e manter uma interação agradavel -->
                 <label for="priority">Elegibilidade para Fila Preferencial</label>
-                <select id="eligibility-reason" name="eligibility_reason">
-                    <option value="">Selecione um motivo</option>
+                <select id="eligibility-reason" name="eligibility_reason"> 
+                    <option value="">Selecione uma opção</option>
+                    <option value="">não elegível</option>
                     <optgroup label="Idade">
                         <option value="idoso">Idoso (60+ anos)</option>
                     </optgroup>
@@ -135,8 +103,8 @@
 
                 </div>
                 
-                <button type="submit" id="submit-patient">Cadastrar</button>
-                <button type="submit" id="submit-queue" class="hidden">Gerar Senha</button>
+                <button type="submit" id="submit-patient">Cadastrar Paciente</button>
+                <button id="submit-queue" class="hidden">Gerar Senha</button>
             
 
             </fieldset>
