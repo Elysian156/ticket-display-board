@@ -7,6 +7,27 @@
     <title>Preview</title>
 </head>
 <body>
+    <section class="preview">
+        <h4>Preview</h4>
+        <div class="layout1">
+            <div class="div1"></div>
+            <div class="carousel-ads">
+                <div class="carousel">
+                    <div class="carousel-item"><video src="../Videos/video1.mp4" autoplay loop muted></video></div>
+                </div>
+            </div>
+            <div class="div3">
+                <div>
+                    <span>Senha:</span>
+                    <h1>N0001</h1>
+                </div>
+                <div>
+                    <span>Guichê:</span>
+                    <h1>2</h1>
+                </div>
+            </div>
+        </div>
+    </section>
     <aside>
         <form enctype="multipart/form-data" class="userEntriesForm"  >
             <div class="swatch">
@@ -37,8 +58,8 @@
                   <span id="span4">#262626</span>
                 </div>
             </div>
-
-            <input type="hidden" name="show-date" value="false">
+<!-- implementações futuras -->
+            <!-- <input type="hidden" name="show-date" value="false">
             <input type="checkbox" id="show-date" name="show-date" value="true">
             <label for="show-date">Mostrar Data</label><br>
 
@@ -48,7 +69,7 @@
 
             <input type="hidden" name="show-temperature" value="false">
             <input type="checkbox" id="show-temperature" name="show-temperature" value="true">
-            <label for="show-temperature">Mostrar Temperatura</label><br>
+            <label for="show-temperature">Mostrar Temperatura</label><br> -->
 
             <!-- <label for="logo" class="custom-file-upload">Logo(opcional)</label>
             <input type="file" id="logo" name="logo" accept="image/*" ><br><br>
@@ -56,31 +77,13 @@
             <label for="videos" class="custom-file-upload">Upload de Medias</label>
             <input type="file" id="videos" name="videos" accept="video/*,image/*"  multiple ><br><br>
          -->
-
+         <div class="form-actions">
+            <button id="reset">Redefinir</button>
             <button type="submit" id="update">Salvar</button>
+         </div>
+
         </form>
     </aside>
-    <section class="preview">
-        <h4>Preview</h4>
-        <div class="layout1">
-            <div class="div1"></div>
-            <div class="carousel-ads">
-                <div class="carousel">
-                    <div class="carousel-item"><video src="../Videos/video1.mp4" autoplay loop muted></video></div>
-                </div>
-            </div>
-            <div class="div3">
-                <div>
-                    <span>Senha:</span>
-                    <h1>N0001</h1>
-                </div>
-                <div>
-                    <span>Guichê:</span>
-                    <h1>2</h1>
-                </div>
-            </div>
-        </div>
-    </section>
     <script src="../JS/layout.js"></script>
 </body>
 </html>

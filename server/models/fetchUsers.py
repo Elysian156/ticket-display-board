@@ -1,39 +1,40 @@
 from models.db import connectDatabase
 
-database = connectDatabase()
-
 def fetchUsers():
-  database = connectDatabase()
-  with database.cursor() as databaseCursor:
-    databaseCursor.execute('SELECT * FROM users')
-
-    users_list = databaseCursor.fetchall()
-    users = list()
-    for item in users_list:
-      users.append(
+    # Conecte ao banco de dados e crie um cursor para cada operação
+    database = connectDatabase()
+    with database.cursor() as cursor:
+        cursor.execute('SELECT * FROM users')
+        users_list = cursor.fetchall()
+    
+    users = [
         {
-          'id': item[0],
-          'name': item[1],
-          'cpf': item[2],
-          'date_birthday': item[3],
-          'is_especial': item[4],
-          'eligibility_reason': item[5]
+            'id': item[0],
+            'name': item[1],
+            'cpf': item[2],
+            'date_birthday': item[3],
+            'is_especial': item[4],
+            'eligibility_reason': item[5]
         }
-      )
-  return users
+        for item in users_list
+    ]
+    return users
 
 def getUserById(userId):
-  database = connectDatabase()
-  query = f'SELECT * FROM users WHERE id = {userId}'
-  with database.cursor() as databaseCursor:
-    databaseCursor.execute(query)
-    user = databaseCursor.fetchall()
-  return user
+    # Conecte ao banco de dados e crie um cursor para cada operação
+    database = connectDatabase()
+    with database.cursor() as cursor:
+        query = 'SELECT * FROM users WHERE id = %s'
+        cursor.execute(query, (userId,))
+        user = cursor.fetchone()
+    return user
 
 def getUserByCPF(cpf):
-  database = connectDatabase()
-  query = f"SELECT * FROM users WHERE cpf = '{cpf}'"
-  with database.cursor() as databaseCursor:
-    databaseCursor.execute(query)
-    user = databaseCursor.fetchall()[0]
-  return user
+    # Conecte ao banco de dados e crie um cursor para cada operação
+    database = connectDatabase()
+    with database.cursor() as cursor:
+        query = 'SELECT * FROM users WHERE cpf = %s'
+        cursor.execute(query, (cpf,))
+        user = cursor.fetchone()
+    return user
+  

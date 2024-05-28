@@ -1,0 +1,218 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+    --background-color: #E1F1FD;
+    --color1: 243, 248, 255;
+    --color2: #242424;
+    --aside-color: #FFFFFF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    font-family: "Poppins", sans-serif;
+    background: var(--background-color);
+}
+
+aside{
+    width: 40vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--aside-color);
+}
+
+.counter-display{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--color2);
+    color: #FFFFFF;
+}
+
+.counter-display div{
+    height: fit-content;
+    width: 50%;
+    text-align: center;
+}
+
+.counter-display div span{
+    text-align: left;
+}
+
+.alert-condition{
+    width: 100%;
+    height: 5%;
+    background: rgb(255, 255, 138);
+    margin-bottom: 2rem;
+}
+
+table {
+    height: fit-content;
+    width: 90%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    box-shadow: 0 0 8px -3px rgba(0,0,0,0.4);
+    border-radius: .5rem;
+}
+
+thead tr{
+    border: 1px solid var(--layout-primary-color);
+}
+
+tr:nth-child(n + 10) {
+    border: none;
+    visibility: hidden;
+}
+
+tr:nth-child(even){
+    background: rgba(var(--color1), 0.8);
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    text-align: center;
+}
+
+th {
+    background-color: var(--background-color);
+    color: var(--layout-text-color);
+}
+td{
+    height: fit-content;
+    color: var(--layout-text-color);
+}
+
+section{
+    width: 70%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+form{
+    width: 60%;
+    height: 600px;
+    min-height: fit-content;
+    min-width: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--aside-color);
+    box-shadow: 0 0 8px -3px rgba(0,0,0,0.4);
+    border-radius: .5rem;
+    padding: .5rem;
+
+}
+
+fieldset{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    border: none;
+    gap: .2rem;
+}
+
+form label{
+    text-align: left;
+    margin-top: .5rem;
+}
+
+form input, form select, button{
+    height: 2.5rem;
+    padding: .4rem;
+    border-radius: .3rem;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.cpf_search{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    
+}
+
+.cpf_search input{
+    height: 2.5rem;
+    width: 100%;
+}
+.cpf_search img{
+    position: absolute;
+    right: .4rem;
+    z-index: 2;
+    width: 20px;
+    height: 20px;
+
+}
+
+.cpf_search img:hover{
+    cursor: pointer;
+    transition: 200ms;
+    filter: invert(48%) sepia(74%) saturate(1598%) hue-rotate(192deg) brightness(91%) contrast(91%);
+}
+
+.urgency-level{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1%;
+}
+
+input[type="radio"]{
+    display: none;
+}
+
+.urgency-level label{
+    width: 49%;
+    padding: .5rem;
+    font-size: .8rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: 2px solid #e7e7e7;
+    border-radius: .3rem;
+    gap: .2rem;
+
+}
+
+.urgency-level label:before {
+    content: "";
+    height: .5rem;
+    width: .5rem;
+    border: 3px solid #e7e7e7;
+    border-radius: 50%;
+}
+input[type="radio"]:checked + label:before {
+    background-color: #4189e0;
+}
+input[type="radio"]:checked + label {
+    background-color: #4189e0;
+    color: #ffffff;
+}
+button{
+    margin-top: 5%;
+    color: #FFFFFF;
+    background-color: var(--color2);
+}
+button.hidden{
+    display: none;
+    visibility: hidden;
+}
+
+input.halfwidth, label.halfwidth, button.halfwidth{
+    width: 50%;
+}

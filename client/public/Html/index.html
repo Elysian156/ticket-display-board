@@ -10,7 +10,7 @@
     <aside>
         <img src="../Images/Placeholder.webp" alt="logo" class="logo">
         <table>
-            <h4>Últimas Chamadas</h4>
+            <h3>Últimas Chamadas</h3>
             <thead>
                 <tr>
                     <th><h4>Senha</h4></th>
@@ -54,11 +54,11 @@
         <div class="ticket-counter-display">
             <div>
                 <span>Senha:</span>
-                <h1 class="current-appointment-number">N0001</h1>
+                <h1 class="current-appointment-number"></h1>
             </div>
             <div>
                 <span>Guichê:</span>
-                <h1 class="current-reception-number">2</h1>
+                <h1 class="current-reception-number"></h1>
             </div>
         </div>
         <div class="carousel-ads">
@@ -84,8 +84,34 @@
         </div>
     </section>
     <script src="../JS/painel.js"></script>
-    <script src="../JS/carousel.js"></script>
-    <script src="../JS/dateTime.js"></script>
     <script src="../JS/dataExchange.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            updateDateTime()
+            updateCarrousel()
+            
+        });
+
+        function updateDateTime() {
+            setInterval(() => {
+                const now = new Date()
+                const time = now.toLocaleTimeString()
+                const date = now.toLocaleDateString()
+                document.getElementById('info-time').innerText = time
+                document.getElementById('info-date').innerText = date
+            }, 1000);
+        }
+
+        function updateCarrousel(){
+            const carousel = document.querySelector(".carousel")
+            let index = 0
+
+            setInterval(() => {
+                index = (index + 1) % carousel.children.length
+                carousel.style.marginLeft = `-${100 * index}%`
+            }, 7000);
+        }
+    </script>
 </body>
 </html>

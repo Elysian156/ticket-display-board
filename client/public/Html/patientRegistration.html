@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../Styles/patientRegistration.css">
+</head>
+<body>
+    <aside>   
+        <div class="counter-display">
+            <div>
+                <span>Senha:</span>
+                <h1 class="current-appointment-number"></h1>
+            </div>
+            <div>
+                <span>Guichê:</span>
+                <h1 class="current-reception-number"></h1>
+            </div>
+        </div>   
+        <div class="alert-condition"></div>  
+        <table>
+            <h4>Últimas Chamadas</h4>
+            <thead>
+                <tr>
+                    <th><h4>Senha</h4></th>
+                    <th><h4>Guichê</h4</th>
+                </tr>
+            </thead>
+            <tbody class="table-body">
+                <!-- <tr>
+                    <td>N0010</td>
+                    <td>5</td>
+                </tr> -->
+            </tbody>
+        </table>
+    </aside>
+    <section>
+        <form class="patient-registration-form">
+            <fieldset>
+                <h2>Registro de Pacientes</h2>
+                <!-- Validar se o CPF já existe e completar outros campos se for o caso, adicionar mascara de input -->
+                <label for="cpf">CPF:</label>
+                <div class="cpf_search">
+                    <input type="text" name="cpf" id="cpf" placeholder="Digite o CPF" required maxlength="14" class="maskcpf">
+                    <img src="../Images/pesquisar-alt.svg" alt="" id="search-cpf">
+                </div>
+
+    
+                <label for="name">Nome:</label>
+                <input type="text" name="name" id="name" placeholder="Nome Completo" required class="onlyletters">
+    
+                <label for="date_birthday" class="halfwidth">Aniversário:</label>
+                <input type="date" name="date_birthday" id="date_birthday" class="halfwidth" min="2000-01-01" required>
+<!-- 
+                <label for="phone" class="">Celular:</label>
+                <input type="tel" id="phone" name="phone" placeholder=" (00) 00000-0000"/> -->
+
+                <!-- Modificar para se tornar multiple e manter uma interação agradavel -->
+                <label for="priority">Elegibilidade para Fila Preferencial</label>
+                <select id="eligibility-reason" name="eligibility_reason"> 
+                    <option value="">Selecione uma opção</option>
+                    <option value="">não elegível</option>
+                    <optgroup label="Idade">
+                        <option value="idoso">Idoso (60+ anos)</option>
+                    </optgroup>
+                    <optgroup label="Gestante">
+                        <option value="gestante">Gestante</option>
+                    </optgroup>
+                    <optgroup label="Deficiências">
+                        <option value="deficiente">Pessoa com Deficiência</option>
+                        <option value="deficiente_visual">Deficiência Visual</option>
+                        <option value="deficiente_auditiva">Deficiência Auditiva</option>
+                        <option value="deficiente_fisica">Deficiência Física</option>
+                        <option value="deficiente_intelectual">Deficiência Intelectual</option>
+                        <option value="deficiente_multipla">Deficiência Múltipla</option>
+                    </optgroup>
+                    <optgroup label="Daltonismo">
+                        <option value="daltonismo">Pessoa com Daltonismo</option>
+                        <option value="protanopia">Protanopia (Daltonismo Vermelho)</option>
+                        <option value="deuteranopia">Deuteranopia (Daltonismo Verde)</option>
+                        <option value="tritanopia">Tritanopia (Daltonismo Azul)</option>
+                    </optgroup>
+                    <optgroup label="Outros">
+                        <option value="bebe">Pessoa com Bebê de Colo</option>
+                        <option value="cronico">Pessoa com Doença Crônica</option>
+                        <option value="outro">Outro</option>
+                    </optgroup>
+                </select>  
+                <label>Nivel de urgencia</label>
+                <div class="urgency-level">
+                    <input type="radio" id="emergency" name="urgency" value="E">
+                    <label for="emergency" class="circle emergency">Emergência</label>
+
+                    <input type="radio" id="urgency" name="urgency" value="U">
+                    <label for="urgency" class="circle urgency">Urgência</label>
+
+                    <input type="radio" id="little-urgent" name="urgency" value="P">
+                    <label for="little-urgent" class="circle little-urgent">Pouco Urgente</label>
+
+                    <input type="radio" id="not-urgent" name="urgency" value="N">
+                    <label for="not-urgent" class="circle not-urgent">Não Urgente</label>
+
+                </div>
+                
+                <button type="submit" id="submit-patient">Cadastrar Paciente</button>
+                <button id="submit-queue" class="hidden">Gerar Senha</button>
+            
+
+            </fieldset>
+        </form>
+    </section>
+
+    <img src="" alt="" id="">
+    <script src="../JS/patientRegistration.js" type="module"></script>
+    <script src="../JS/inputMasks.js"></script>
+</body>
+</html>

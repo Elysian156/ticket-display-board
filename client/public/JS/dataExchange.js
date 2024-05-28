@@ -23,8 +23,7 @@ function displayCurrent(data){
     document.querySelectorAll('.current-appointment-number').forEach(element => {
         element.textContent =  data.appointment_number;
     });
-    // document.querySelector('.current-reception-number').textContent = data.reception_number;
-    // document.querySelector('.current-appointment-number').textContent = data.appointment_number;
+
     const audio = new Audio('../Audio/72128__kizilsungur__sweetalertsound4.wav');
     audio.play();
     setTimeout(() => {
