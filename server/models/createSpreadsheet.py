@@ -1,13 +1,14 @@
 import gspread
-import os
-from datetime import datetime
+from db import connectDatabase
+import os.path
 import json
-from pathlib import Path
+from datetime import datetime
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 
+# If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 
 creds = None
@@ -18,7 +19,7 @@ if not creds or not creds.valid:
         creds.refresh(Request())
     else:
         flow = InstalledAppFlow.from_client_secrets_file(
-            "credentials.json", SCOPES)
+            "client_secret.json", SCOPES)
         creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open("token.json", "w") as token:
