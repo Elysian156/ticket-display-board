@@ -60,7 +60,20 @@ def search_user(cpf):
         }), 200
     else:
         return jsonify({'message': "Usuário não encontrado"}), 404
+  userData = request.json
 
+  cpf = userData["cpf"]
+  date_birthday = userData["date_birthday"]
+  name = userData["name"]
+  is_especial = userData["is_especial"]
+  eligibility_reason = userData.get("eligibility_reason", " ")
+  isCreatedUser = createUser(name, cpf, date_birthday, is_especial, eligibility_reason)
+
+  if(isCreatedUser):
+    return jsonify({ 'message': 'Usuário cadastrado com sucesso!' }), 201
+  else:
+    return jsonify({ 'message': 'Não foi possível cadastrar o usuário' }), 400
+ 
 @app.route('/api/passwords/create', methods=["POST"])
 def create_password():
     try:

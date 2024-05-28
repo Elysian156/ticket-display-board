@@ -1,5 +1,4 @@
 from models.db import connectDatabase
-
 def createUser(name, cpf, date_birthday, is_especial, eligibility_reason):
     database = connectDatabase()
     query = """
@@ -14,3 +13,4 @@ def createUser(name, cpf, date_birthday, is_especial, eligibility_reason):
     except Exception as e:
         print(f"Error creating user: {e}")
         return False
+
