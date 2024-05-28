@@ -28,8 +28,8 @@ def create_user():
   date_birthday = userData["date_birthday"]
   name = userData["name"]
   is_especial = userData["is_especial"]
-  deficiency = userData.get("deficiency", " ")
-  isCreatedUser = createUser(name, cpf, date_birthday, is_especial, deficiency)
+  eligibility_reason = userData.get("eligibility_reason", " ")
+  isCreatedUser = createUser(name, cpf, date_birthday, is_especial, eligibility_reason)
 
   if(isCreatedUser):
     return jsonify({ 'message': 'Usuário cadastrado com sucesso!' }), 201
@@ -38,7 +38,7 @@ def create_user():
   
 @app.route('/api/users/<cpf>', methods=["GET"])
 def search_user(cpf):
-  user = getUserByCPF(cpf)[0]
+  user = getUserByCPF(cpf)
   if(user):
     user_id = user[0]
     name = user[1]
