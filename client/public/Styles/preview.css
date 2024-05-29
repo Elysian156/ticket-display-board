@@ -22,6 +22,7 @@ body {
     font-family: "Poppins", sans-serif;
     font-weight: 400;
     background: #E1F1FD;
+    overflow: hidden;
     transition: background 400ms;
 }
 
@@ -35,8 +36,8 @@ body {
 }
 
 .layout1 {
-    width: 1000px;
-    height: 500px;
+    width: 50rem;
+    height: 25rem;
     display: grid;
     grid-template-columns: .4fr 1fr;
     grid-template-rows: repeat(5, 1fr);
@@ -51,8 +52,18 @@ body {
     background-color: var(--layout-secondary-color);
 }
 
+.div3 {
+    display: flex;
+    align-items: center;
+    grid-area: 1 / 2 / 2 / 6;;
+    gap: 10rem;
+    padding: 1rem;
+    color: var(--layout-text-color);
+    background-color: var(--layout-primary-color);
+}
+
 .carousel-ads {
-    grid-area: 1 / 2 / 5 / 3;
+    grid-area: 2 / 2 / 6 / 6;
     background-color: var(--layout-background-color);
     position: relative;
     overflow: hidden;
@@ -71,15 +82,7 @@ body {
     aspect-ratio: 16 / 9;
 }
 
-.div3 {
-    display: flex;
-    align-items: center;
-    grid-area: 5 / 2 / 6 / 3;
-    gap: 10rem;
-    padding: 1rem;
-    color: var(--layout-text-color);
-    background-color: var(--layout-primary-color);
-}
+
 
 aside {
     width: 100%;

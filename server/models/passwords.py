@@ -83,3 +83,20 @@ def findPasswordWithPassword(password):
   databaseCursor.execute(queryUsers)
   user = databaseCursor.fetchall()[0]
   return user
+
+def fetchPasswords2():
+    query = "SELECT is_priority, `order`, unformated_password, urgency_level, user_id FROM passwords"
+    databaseCursor.execute(query)
+    passwords = databaseCursor.fetchall()
+    if passwords:
+        passwordsList = []
+        for password in passwords:
+            passwordsList.append({
+                'is_priority': password[0],
+                'order': password[1],
+                'unformatedPassword': password[2],
+                'urgency_level': password[3],
+                'user_id': password[4]
+            })
+        return passwordsList
+    return []

@@ -10,42 +10,18 @@
     <aside>
         <img src="../Images/Placeholder.webp" alt="logo" class="logo">
         <table>
-            <h3>Últimas Chamadas</h3>
+            <h4>Últimas Chamadas</h4>
             <thead>
                 <tr>
                     <th><h4>Senha</h4></th>
-                    <th><h4>Senha</h4</th>
+                    <th><h4>Guichê</h4</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>N0008</td>
-                    <td>3</td>
-                </tr>
-                <tr>
-                    <td>N0007</td>
-                    <td>3</td>
-                </tr>
-                <tr>
-                    <td>N0006</td>
-                    <td>2</td>
-                </tr>
-                <tr>
-                    <td>N0005</td>
-                    <td>1</td>
-                </tr>
-                <tr>
-                    <td>N0004</td>
+            <tbody class="table-body">
+                <!-- <tr>
+                    <td>N0010</td>
                     <td>5</td>
-                </tr>
-                <tr>
-                    <td>N0003</td>
-                    <td>4</td>
-                </tr>
-                <tr>
-                    <td>N0002</td>
-                    <td>3</td>
-                </tr>
+                </tr> -->
             </tbody>
         </table>
 
@@ -74,25 +50,23 @@
         </div>
     </section>
     <section class="ticket-highlight">
-        <div>
-            <span>Senha:</span>
-            <h1 class="current-appointment-number">N0001</h1>
+        <div class="queue-display">
+            <div>
+                <span>Senha:</span>
+                <h1 class="current-appointment-number"></h1>
+            </div>
+            <div>
+                <span>Guichê:</span>
+                <h1 class="current-reception-number"></h1>
+            </div>
         </div>
         <div>
-            <span>Guichê:</span>
-            <h1 class="current-reception-number">2</h1>
+            <h2 class="current-pacient-name">batat</h2>
         </div>
     </section>
     <script src="../JS/painel.js"></script>
-    <script src="../JS/dataExchange.js"></script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            updateDateTime()
-            updateCarrousel()
-            
-        });
-
         function updateDateTime() {
             setInterval(() => {
                 const now = new Date()
