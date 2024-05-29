@@ -37,3 +37,4 @@ def getUserByCPF(cpf):
         cursor.execute(query, (cpf,))
         user = cursor.fetchone()
     return user
+  

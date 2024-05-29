@@ -1,13 +1,12 @@
 from models.db import connectDatabase
 from datetime import datetime
 
-database = connectDatabase()
-databaseCursor = database.cursor()
-
 def fetch_last_password(urgencyLevel, isPriority):
-  passwordIsPriority = 1 if isPriority else 0
-  databaseCursor.execute(f"SELECT * FROM passwords WHERE urgency_level = '{urgencyLevel}' AND is_priority = '{passwordIsPriority}' ORDER BY id DESC LIMIT 1")
-  last_password = databaseCursor.fetchall()
+  database = connectDatabase()
+  with database.cursor() as databaseCursor:
+    passwordIsPriority = 1 if isPriority else 0
+    databaseCursor.execute(f"SELECT * FROM passwords WHERE urgency_level = '{urgencyLevel}' AND is_priority = '{passwordIsPriority}' ORDER BY id DESC LIMIT 1")
+    last_password = databaseCursor.fetchall()
   if(last_password):
     last_password = last_password[0]
     return {
@@ -26,22 +25,25 @@ def fetch_last_password(urgencyLevel, isPriority):
 def createPassword(order, isPriority, urgencyLevel, userId, unformatedPassword):
   passwordIsPriority = 1 if isPriority else 0
   nowDate = datetime.now()
+  database = connectDatabase()
   query = f"INSERT INTO `passwords` (`id`, `order`, `is_attended`, `created_at`, `user_id`, `is_priority`, `urgency_level`, `unformated_password`) VALUES (NULL, '{order}', '0', '{nowDate}', '{userId}', '{passwordIsPriority}', '{urgencyLevel}', '{unformatedPassword}');"
+  with database.cursor() as databaseCursor:
+    databaseCursor.execute(query)
+    database.commit()
 
-  databaseCursor.execute(query)
-  database.commit()
+    databaseCursor.execute("SELECT LAST_INSERT_ID();")
 
-  databaseCursor.execute("SELECT LAST_INSERT_ID();")
-
-  last_inserted_id = databaseCursor.fetchall()
+    last_inserted_id = databaseCursor.fetchall()
   if(last_inserted_id):
     return last_inserted_id[0]
   return []
 
 def fetchPasswords():
   query = "SELECT * FROM passwords"
-  databaseCursor.execute(query)
-  passwords = databaseCursor.fetchall()
+  database = connectDatabase()
+  with database.cursor() as databaseCursor:
+    databaseCursor.execute(query)
+    passwords = databaseCursor.fetchall()
   if(passwords):
     passwordsList = list()
     for password in passwords:
@@ -60,7 +62,6 @@ def fetchPasswords():
   return []
 
 def fecthOnePasswordByCode(password):
-  print(password)
   passwordsList = fetchPasswords()
   findedPassword = ""
   for item in passwordsList:
@@ -72,16 +73,20 @@ def fecthOnePasswordByCode(password):
 def checkoutPassword(idPassword):
   nowDate = datetime.now()
   query = f"UPDATE `passwords` SET `date_attended` = '{nowDate}' WHERE `passwords`.`id` = {idPassword};"
-  databaseCursor.execute(query)
-  database.commit()
+  database = connectDatabase()
+  with database.cursor() as databaseCursor:
+    databaseCursor.execute(query)
+    database.commit()
 
 def findPasswordWithPassword(password):
   query = f"SELECT * FROM passwords where `unformated_password` = '{password}'"
-  databaseCursor.execute(query)
-  findedUserIdInPassword = databaseCursor.fetchall()[0][5]
-  queryUsers = f"SELECT name, eligibility_reason FROM users WHERE id = '{findedUserIdInPassword}'"
-  databaseCursor.execute(queryUsers)
-  user = databaseCursor.fetchall()[0]
+  database = connectDatabase()
+  with database.cursor() as databaseCursor:
+    databaseCursor.execute(query)
+    findedUserIdInPassword = databaseCursor.fetchall()[0][5]
+    queryUsers = f"SELECT name, eligibility_reason FROM users WHERE id = '{findedUserIdInPassword}'"
+    databaseCursor.execute(queryUsers)
+    user = databaseCursor.fetchall()[0]
   return user
 
 def fetchPasswords2():
