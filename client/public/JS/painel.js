@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateDateTime()
     updateCarrousel()
     updateTheme();
+    console.log(JSON.parse(localStorage.getItem('currentCall')), JSON.parse(localStorage.getItem('lastCalls')))
     styleAll(JSON.parse(localStorage.getItem('currentCall')), JSON.parse(localStorage.getItem('lastCalls')));
 });
 
@@ -32,7 +33,7 @@ function updateTheme() {
 
 function styleAll(current, previousCalls) {
     if (!current) return;
-    console.log(current)
+
     displayCurrent(current)
 
     if (previousCalls && previousCalls.length > 0) {
@@ -63,8 +64,8 @@ function styleAll(current, previousCalls) {
 }
 
 function displayCurrent(current){
+    const utternance = new SpeechSynthesisUtterance("Clean codo")
     ticketHighlight.classList.add("ticket-highlight-show");
-
     document.querySelectorAll('.current-reception-number').forEach(element => {
         element.textContent = current.appointment_number;
     });
@@ -73,8 +74,8 @@ function displayCurrent(current){
     });
 
     document.querySelector(".current-pacient-name").textContent = current.name;
-
     audio.play();
+    speechSynthesis.speak(utternance)
     setTimeout(() => {
         ticketHighlight.classList.remove("ticket-highlight-show");
     }, 5000);

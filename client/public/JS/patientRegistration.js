@@ -180,7 +180,7 @@ function fetchQueueDataAndApply() {
         })
         .then(data => {
             if (data.message) {
-                alert(data.message)
+                alert(data.message);
                 console.log('Ignoring message:', data.message);
                 return; 
             }
@@ -195,7 +195,11 @@ function fetchQueueDataAndApply() {
             localStorage.setItem('currentCall', JSON.stringify(data));
             // Update the current call
             currentCall = data;
- 
+
+            // Emit a custom event with the queue data
+            const event = new CustomEvent('queueDataApplied', { detail: { currentCall: data } });
+            document.dispatchEvent(event);
+
             styleAll(currentCall, JSON.parse(localStorage.getItem('lastCalls')));
 
         })
