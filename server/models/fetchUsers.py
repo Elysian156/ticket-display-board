@@ -1,34 +1,40 @@
 from models.db import connectDatabase
 
-database = connectDatabase()
-databaseCursor = database.cursor()
-
 def fetchUsers():
-  databaseCursor.execute('SELECT * FROM users')
-
-  users_list = databaseCursor.fetchall()
-  users = list()
-  for item in users_list:
-    users.append(
-      {
-        'id': item[0],
-        'name': item[1],
-        'cpf': item[2],
-        'date_birthday': item[3],
-        'is_especial': item[4],
-        'eligibility_reason': item[5]
-      }
-    )
-  return users
+    # Conecte ao banco de dados e crie um cursor para cada operação
+    database = connectDatabase()
+    with database.cursor() as cursor:
+        cursor.execute('SELECT * FROM users')
+        users_list = cursor.fetchall()
+    
+    users = [
+        {
+            'id': item[0],
+            'name': item[1],
+            'cpf': item[2],
+            'date_birthday': item[3],
+            'is_especial': item[4],
+            'eligibility_reason': item[5]
+        }
+        for item in users_list
+    ]
+    return users
 
 def getUserById(userId):
-  query = f'SELECT * FROM users WHERE id = {userId}'
-  databaseCursor.execute(query)
-  user = databaseCursor.fetchall()
-  return user
+    # Conecte ao banco de dados e crie um cursor para cada operação
+    database = connectDatabase()
+    with database.cursor() as cursor:
+        query = 'SELECT * FROM users WHERE id = %s'
+        cursor.execute(query, (userId,))
+        user = cursor.fetchone()
+    return user
 
 def getUserByCPF(cpf):
-  query = f"SELECT * FROM users WHERE cpf = '{cpf}'"
-  databaseCursor.execute(query)
-  user = databaseCursor.fetchall()
-  return user
+    # Conecte ao banco de dados e crie um cursor para cada operação
+    database = connectDatabase()
+    with database.cursor() as cursor:
+        query = 'SELECT * FROM users WHERE cpf = %s'
+        cursor.execute(query, (cpf,))
+        user = cursor.fetchone()
+    return user
+  

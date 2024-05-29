@@ -1,13 +1,16 @@
 from models.db import connectDatabase
+def createUser(name, cpf, date_birthday, is_especial, eligibility_reason):
+    database = connectDatabase()
+    query = """
+        INSERT INTO users (name, cpf, date_birthday, is_especial, eligibility_reason)
+        VALUES (%s, %s, %s, %s, %s);
+    """
+    try:
+        with database.cursor() as cursor:
+            cursor.execute(query, (name, cpf, date_birthday, is_especial, eligibility_reason))
+            database.commit()
+        return True
+    except Exception as e:
+        print(f"Error creating user: {e}")
+        return False
 
-database = connectDatabase()
-
-def createUser(name, cpf, date_birthday, is_especial, deficiency):
-  cursor = database.cursor()
-  query = f"INSERT INTO `users` (`id`, `name`, `cpf`, `date_birthday`, `is_especial`, `deficiency`) VALUES (NULL, '{name}', '{cpf}', '{date_birthday}', '{is_especial}', '{deficiency}');"
-  try:
-    cursor.execute(query)
-    database.commit()
-    return True
-  except:
-    return False
