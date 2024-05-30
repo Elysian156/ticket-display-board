@@ -205,7 +205,7 @@ def end():
         fetching_data()
         updateSpreadsheet()
 
-        return jsonify({"link_planilha": "https://docs.google.com/spreadsheets/d/1kdCSm6NCydh3mfUBuYATwlRnl_hbxQYYEUoUkJ0xdT8/edit?usp=sharing"}), 200
+        return jsonify({"link_planilha": "https://docs.google.com/spreadsheets/d/" + updateSpreadsheet() + "/edit?usp=sharing"}), 200
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 

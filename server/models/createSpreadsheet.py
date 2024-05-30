@@ -1,5 +1,5 @@
 import gspread
-from models.db import connectDatabase
+from db import connectDatabase
 import os.path
 import json
 from datetime import datetime

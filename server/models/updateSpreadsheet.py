@@ -1,5 +1,5 @@
 import gspread
-from models.db import connectDatabase
+from db import connectDatabase
 import os.path
 import json
 from datetime import datetime
@@ -25,7 +25,6 @@ if not creds or not creds.valid:
         with open("token.json", "w") as token:
             token.write(creds.to_json())
 
-
 database = connectDatabase()
 gc = gspread.authorize(creds)
 
@@ -34,10 +33,6 @@ current_date_iso = current_date.isoformat()
 
 # Path to the JSON file
 database_file_path = '../database/spreadsheet_database.json'
-
-
-
-
 
 
 def fetching_data():
@@ -89,6 +84,7 @@ def next_available_row(worksheet):
     str_list = list(filter(None, worksheet.col_values(1)))
     return str(len(str_list) + 1)
 
+
 def updateSpreadsheet():
     """ Code that adds the information into the spreadsheet"""
     # Load existing data
@@ -123,7 +119,7 @@ def updateSpreadsheet():
 
     # Atualizando lista de id, valor de coluna 11
 
-    [id_list, name_list, cpf_list, birthday_list, special_list, deficiency_list ] = fetching_data()
+    [id_list, name_list, cpf_list, birthday_list, special_list, deficiency_list] = fetching_data()
 
     '''id_list = [1,2,3]
     deficiency_list = ["Visual", "Auditiva", "Nenhuma"]
@@ -132,11 +128,9 @@ def updateSpreadsheet():
     name_list = ["Batata", "batatinha", "batatao"]
     cpf_list = ["12345678958","56789412390","45632187960"]'''
 
-
     for index, item in enumerate(id_list):
         worksheet.update_acell("F{}".format(next_row), *id_list[index])
         next_row = int(next_row) + 1
-
 
     next_row = next_available_row(worksheet)
     for index, item in enumerate(deficiency_list):
@@ -158,11 +152,20 @@ def updateSpreadsheet():
         worksheet.update_acell("B{}".format(next_row), *name_list[index])
         next_row = int(next_row) + 1
 
-
     next_row = next_available_row(worksheet)
     for index, item in enumerate(cpf_list):
         worksheet.update_acell("A{}".format(next_row), *cpf_list[index])
         next_row = int(next_row) + 1
+
+    """database_cursor = database.cursor()
+    database_cursor.execute("SELECT * from users")
+    print(database_cursor.fetchall())
+    sql = "DELETE FROM `users`"
+    database_cursor.execute(sql)
+
+    print(database_cursor.fetchall())
+"""
+    return print(f"docs.google.com/spreadsheets/d/" + spreadsheet_id + "/edit#gid=0")
 
 
 if __name__ == "__main__":
