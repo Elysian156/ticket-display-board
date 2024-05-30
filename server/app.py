@@ -30,7 +30,7 @@ def create_user():
         name = userData.get("name")
         cpf = userData.get("cpf")
         date_birthday = userData.get("date_birthday")
-        is_especial = userData.get("is_especial")
+        is_especial = userData.get("is_especial", False) 
         eligibility_reason = userData.get("eligibility_reason", "")
 
         if not all([name, cpf, date_birthday]):
@@ -133,7 +133,7 @@ def get_next_password():
             'appointment_number': appointment_number,
             'reception_number': reception_number,
             'name': name,
-            'eligibility_reason': eligibility_reason
+            'eligibility_reason': eligibility_reason, 
         }
         print(response_data)
         return jsonify(response_data), 200
