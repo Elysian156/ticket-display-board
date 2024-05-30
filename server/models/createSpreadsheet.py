@@ -1,8 +1,9 @@
 import gspread
-from db import connectDatabase
+from models.db import connectDatabase
 import os.path
 import json
 from datetime import datetime
+from pathlib import Path
 
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -19,7 +20,7 @@ if not creds or not creds.valid:
         creds.refresh(Request())
     else:
         flow = InstalledAppFlow.from_client_secrets_file(
-            "client_secret.json", SCOPES)
+            "credentials.json", SCOPES)
         creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open("token.json", "w") as token:
