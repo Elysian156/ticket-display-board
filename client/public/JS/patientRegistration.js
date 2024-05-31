@@ -17,26 +17,20 @@ const checkoutQueueButton = document.querySelector('#checkout-queue .modal-image
 const customizeButton = document.querySelector('#customize-painel .modal-image');
 const endServiceButton = document.querySelector('#end-day .modal-image');
 
+callQueueButton.addEventListener('click', fetchQueueDataAndApply);
 
-
-
-callQueueButton.addEventListener('click', function() {
-    fetchQueueDataAndApply();
-});
-
-
-endServiceButton.addEventListener('click', function() {
+endServiceButton.addEventListener('click', () => {
     localStorage.removeItem('currentCall');
     localStorage.removeItem('lastCalls');
-    endProcess()
-    window.location.reload();
+    endProcess();
+    updateDisplay();
 });
 
-customizeButton.addEventListener('click', function() {
+customizeButton.addEventListener('click', () => {
     window.open('./UserConfig.html');
 });
 
-checkoutQueueButton.addEventListener('click', async function() {
+checkoutQueueButton.addEventListener('click', async () => {
     let lastCalls = JSON.parse(localStorage.getItem('lastCalls'));
     let foundIndex = lastCalls.findIndex(call => call.is_attended !== 1);
 
@@ -49,7 +43,7 @@ checkoutQueueButton.addEventListener('click', async function() {
 
             const response = await checkoutPassword(lastCalls[foundIndex].appointment_number);
             console.log('Senha checked out successfully', response);
-  
+
         } catch (error) {
             console.error('Error checking out password:', error);
         }
@@ -57,8 +51,6 @@ checkoutQueueButton.addEventListener('click', async function() {
         console.log('No previous calls found');
     }
 });
-
-
 
 function clearFormFields() {
     document.querySelector("#name").value = '';
@@ -165,7 +157,7 @@ function fetchQueueDataAndApply() {
             }
 
             console.log('Queue data successfully applied:', data);
-            data.is_attended = 0
+            data.is_attended = 0;
             if (localStorage.getItem('currentCall')) {
                 let lastCalls = JSON.parse(localStorage.getItem('lastCalls')) || [];
                 lastCalls.push(JSON.parse(localStorage.getItem('currentCall')));
@@ -175,10 +167,7 @@ function fetchQueueDataAndApply() {
             localStorage.setItem('currentCall', JSON.stringify(data));
             currentCall = data;
 
-            const event = new Event('storageChange');
-            window.dispatchEvent(event);
-            styleAll(currentCall, JSON.parse(localStorage.getItem('lastCalls')));
-
+            updateDisplay();
         })
         .catch(error => {
             console.error('Error retrieving and applying data:', error);
@@ -198,26 +187,26 @@ function toggleSubmitButtons(showQueueButton) {
 addEventListener("keydown", (event) => {
     if (event.key === '+') {
         fetchQueueDataAndApply();
-    }
-    else if(event.key === '*'){
+    } else if (event.key === '*') {
         console.log(JSON.parse(localStorage.getItem('currentCall')));
         console.log(JSON.parse(localStorage.getItem('lastCalls')));
-    }
-    if (event.key === '-') {
+    } else if (event.key === '-') {
         localStorage.removeItem('currentCall');
         localStorage.removeItem('lastCalls');
-        window.location.reload();
+        updateDisplay();
     }
 });
+
+function updateDisplay() {
+    styleAll(JSON.parse(localStorage.getItem('currentCall')), JSON.parse(localStorage.getItem('lastCalls')));
+}
 
 function styleAll(current, previousCalls) {
     if (!current) return;
 
     document.querySelector('.current-reception-number').textContent = current.reception_number; 
-    document.querySelector('.current-appointment-number').textContent = current.appointment_number
-    if(current.eligibility_reason) document.querySelector('.alert-condition').textContent =  "ATENÇÃO! paciente com " + current.eligibility_reason
-    
-
+    document.querySelector('.current-appointment-number').textContent = current.appointment_number;
+    if (current.eligibility_reason) document.querySelector('.alert-condition').textContent = "ATENÇÃO! paciente com " + current.eligibility_reason;
 
     const tableBody = document.querySelector('.table-body');
 
@@ -225,7 +214,6 @@ function styleAll(current, previousCalls) {
         previousCalls.reverse();
 
         previousCalls.forEach(call => {
-            // Verificar se a chamada já existe na tabela
             if (!isCallExistsInTable(call)) {
                 const tr = document.createElement('tr');
 
@@ -238,7 +226,7 @@ function styleAll(current, previousCalls) {
                 tr.appendChild(senhaTd);
                 tr.appendChild(guicheTd);
 
-                tableBody.insertBefore(tr, tableBody.firstChild); // Adicionar antes do primeiro elemento existente
+                tableBody.insertBefore(tr, tableBody.firstChild);
             }
         });
     } else {
@@ -246,7 +234,6 @@ function styleAll(current, previousCalls) {
     }
 }
 
-// Função auxiliar para verificar se a chamada já existe na tabela
 function isCallExistsInTable(call) {
     const tableRows = document.querySelectorAll('.table-body tr');
     for (let i = 0; i < tableRows.length; i++) {
@@ -259,12 +246,8 @@ function isCallExistsInTable(call) {
     return false;
 }
 
-
 function initializeApp() {
-    
-    window.addEventListener('load', function() {
-        styleAll(JSON.parse(localStorage.getItem('currentCall')), JSON.parse(localStorage.getItem('lastCalls')));
-    });
+    window.addEventListener('load', updateDisplay);
 }
 
 initializeApp();

@@ -1,20 +1,16 @@
 document.addEventListener("DOMContentLoaded", () => {
-    updateDateTime()
-    updateCarrousel()
+    updateDateTime();
+    updateCarrousel();
     updateTheme();
-    styleAll(JSON.parse(localStorage.getItem('currentCall')), JSON.parse(localStorage.getItem('lastCalls')));
     displayCurrent(JSON.parse(localStorage.getItem('currentCall')));
+    styleAll(JSON.parse(localStorage.getItem('currentCall')), JSON.parse(localStorage.getItem('lastCalls')));
 });
-
-const ticketHighlight = document.querySelector(".ticket-highlight")
-
 
 window.addEventListener('storage', (event) => {
     if (event.key === 'themeStorage') {
         updateTheme();
-    } 
-    else if(event.key === "currentCall"){
-       displayCurrent(JSON.parse(localStorage.getItem('currentCall')))
+    } else if (event.key === "currentCall") {
+        displayCurrent(JSON.parse(localStorage.getItem('currentCall')));
     }
 });
 
@@ -35,7 +31,6 @@ function updateTheme() {
     }
 }
 
-
 function styleAll(current, previousCalls) {
     if (!current) return;
 
@@ -43,31 +38,24 @@ function styleAll(current, previousCalls) {
         element.textContent = current.appointment_number;
     });
     document.querySelectorAll('.current-appointment-number').forEach(element => {
-        element.textContent =  current.reception_number;
+        element.textContent = current.reception_number;
     });
     document.querySelector(".current-pacient-name").textContent = current.name;
-
 
     const tableBody = document.querySelector('.table-body');
 
     if (previousCalls && previousCalls.length > 0) {
         previousCalls.reverse();
-
         previousCalls.forEach(call => {
-            // Verificar se a chamada já existe na tabela
             if (!isCallExistsInTable(call)) {
                 const tr = document.createElement('tr');
-
                 const senhaTd = document.createElement('td');
                 senhaTd.textContent = call.appointment_number;
-
                 const guicheTd = document.createElement('td');
                 guicheTd.textContent = call.reception_number;
-
                 tr.appendChild(senhaTd);
                 tr.appendChild(guicheTd);
-
-                tableBody.insertBefore(tr, tableBody.firstChild); // Adicionar antes do primeiro elemento existente
+                tableBody.insertBefore(tr, tableBody.firstChild);
             }
         });
     } else {
@@ -75,7 +63,6 @@ function styleAll(current, previousCalls) {
     }
 }
 
-// Função auxiliar para verificar se a chamada já existe na tabela
 function isCallExistsInTable(call) {
     const tableRows = document.querySelectorAll('.table-body tr');
     for (let i = 0; i < tableRows.length; i++) {
@@ -88,35 +75,29 @@ function isCallExistsInTable(call) {
     return false;
 }
 
-async function displayCurrent(current){
-    if(current.called == 1) return
-
+function displayCurrent(current) {
+    if (current.called == 1) return;
     const audio = new Audio('../Audio/72128__kizilsungur__sweetalertsound4.wav');
-    const utternance = new SpeechSynthesisUtterance(current.name)   
-    
-    await audio.play();
-    await speechSynthesis.speak(utternance)   
-    ticketHighlight.classList.toggle("ticket-highlight-show");
-    
+    const utternance = new SpeechSynthesisUtterance(current.name);
 
-    setColorScheme(current.eligibility_reason)
-    
-    await playVoice(current.name)
+    audio.play();
+    speechSynthesis.speak(utternance);
+    Highlightticket();
+    setColorScheme(current.eligibility_reason);
 
+    let currentCall = JSON.parse(localStorage.getItem('currentCall'));
+    currentCall.called = 1;
+    localStorage.setItem("currentCall", JSON.stringify(currentCall));
+}
+
+function Highlightticket() {
+    const ticketHighlight = document.querySelector(".ticket-highlight");
+
+    ticketHighlight.classList.add("ticket-highlight-show");
     setTimeout(() => {
         ticketHighlight.classList.remove("ticket-highlight-show");
     }, 5000);
-
-    let currentCall = JSON.parse(localStorage.getItem('currentCall'));
-    currentCall.called = 1
-
-    localStorage.setItem("currentCall", JSON.stringify(currentCall))
 }
-
-function playVoice(name){
-
-}
-
 
 function setColorScheme(eligibility_reason) {
     const defaultColors = {
@@ -126,8 +107,8 @@ function setColorScheme(eligibility_reason) {
         textColor: getComputedStyle(document.documentElement).getPropertyValue('--layout-text-color').trim(),
     };
 
-    switch(eligibility_reason) {
-        case 'protanopia': 
+    switch (eligibility_reason) {
+        case 'protanopia':
             document.documentElement.style.setProperty('--layout-background-color', '#a6611a');
             document.documentElement.style.setProperty('--layout-primary-color', '#dfc27d');
             document.documentElement.style.setProperty('--layout-secondary-color', '#80cdc1');
@@ -152,7 +133,7 @@ function setColorScheme(eligibility_reason) {
             break;
     }
 
-    setTimeout(function() {
+    setTimeout(() => {
         document.documentElement.style.setProperty('--layout-background-color', defaultColors.backgroundColor);
         document.documentElement.style.setProperty('--layout-primary-color', defaultColors.primaryColor);
         document.documentElement.style.setProperty('--layout-secondary-color', defaultColors.secondaryColor);
@@ -160,10 +141,9 @@ function setColorScheme(eligibility_reason) {
     }, 7400);
 }
 
-
 addEventListener("keydown", (event) => {
-    if (event.key === '+') {
-        console.log(localStorage.getItem("currentCall"))
+    if (event.key === '*') {
+        console.log(JSON.parse(localStorage.getItem("currentCall")));
+        console.log(JSON.parse(localStorage.getItem("lastCalls")));
     }
-
 });

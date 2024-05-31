@@ -59,6 +59,7 @@ thead tr{
 }
 
 tr:nth-child(n + 10) {
+    display: none;
     border: none;
     visibility: hidden;
 }
