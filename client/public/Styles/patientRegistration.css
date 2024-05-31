@@ -56,6 +56,10 @@ aside{
 .alert-condition{
     width: 100%;
     height: 5%;
+    padding: .1rem;
+    display: flex;
+    align-items: center;
+
     background: rgb(255, 255, 138);
     margin-bottom: 2rem;
 }
@@ -105,29 +109,30 @@ section{
     justify-content: space-around;
 }
 
-.modal-options{
+.modal-options {
     position: absolute;
     z-index: 4;
     padding: .5rem;
     top: 0;
     right: 0;
-    transform: translateX(+100%);
+    transform: translateX(100%);
     border-radius: .5rem;
-    background: var(--aside-color);
-    box-shadow: 0 0 1em 0 hsla(0, 0%, 14%, 0.111);
-
-}
-
-.modal-options button{
-    width: 100%;
-}
-
-.modal-show{
+    width: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: .2rem;
-    transition: 1s;
+    background: var(--aside-color);
+    box-shadow: 0 0 1em 0 hsla(0, 0%, 14%, 0.111);
+    transition: transform .8s ease-in-out;
+}
+
+.modal-options button {
+    width: 100%;
+}
+
+.modal-show {
+
     transform: translateX(0);
 }
 

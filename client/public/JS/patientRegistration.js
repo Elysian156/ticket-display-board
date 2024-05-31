@@ -33,7 +33,6 @@ customizeButton.addEventListener('click', function() {
     window.open('./UserConfig.html');
 });
 
-
 checkoutQueueButton.addEventListener('click', async function() {
     let lastCalls = JSON.parse(localStorage.getItem('lastCalls'));
     let foundIndex = lastCalls.findIndex(call => call.is_attended !== 1);
@@ -41,15 +40,13 @@ checkoutQueueButton.addEventListener('click', async function() {
     if (foundIndex !== -1) {
         try {
             alert('Senha mais antiga: ' + lastCalls[foundIndex].appointment_number);
+
             lastCalls[foundIndex].is_attended = 1;
             localStorage.setItem('lastCalls', JSON.stringify(lastCalls));
 
             const response = await checkoutPassword(lastCalls[foundIndex].appointment_number);
             console.log('Senha checked out successfully', response);
-            
-            // Atualiza e salva no localStorage após a conclusão da função assíncrona
-
-            
+  
         } catch (error) {
             console.error('Error checking out password:', error);
         }
@@ -58,9 +55,6 @@ checkoutQueueButton.addEventListener('click', async function() {
     }
 });
 
-function updateAttendance(lastCalls, foundIndex) {
-
-}
 
 
 function clearFormFields() {
@@ -178,10 +172,10 @@ function fetchQueueDataAndApply() {
             localStorage.setItem('currentCall', JSON.stringify(data));
             currentCall = data;
 
-            const event = new CustomEvent('queueDataApplied', { detail: { currentCall: data, lastCalls: lastCalls } });
-            document.dispatchEvent(event);
-
+            const event = new Event('storageChange');
+            window.dispatchEvent(event);
             styleAll(currentCall, JSON.parse(localStorage.getItem('lastCalls')));
+
         })
         .catch(error => {
             console.error('Error retrieving and applying data:', error);
@@ -218,7 +212,8 @@ function styleAll(current, previousCalls) {
 
     document.querySelector('.current-reception-number').textContent = current.reception_number; 
     document.querySelector('.current-appointment-number').textContent = current.appointment_number
-    document.querySelector('.alert-condition').textContent = current.eligibility_reason
+    if(current.eligibility_reason) document.querySelector('.alert-condition').textContent =  "ATENÇÃO! paciente com " + current.eligibility_reason
+    
 
 
     const tableBody = document.querySelector('.table-body');
