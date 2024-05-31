@@ -32,7 +32,7 @@ current_date = datetime.now().date()
 current_date_iso = current_date.isoformat()
 
 # Path to the JSON file
-database_file_path = '../database/spreadsheet_database.json'
+database_file_path = './database/spreadsheet_database.json'
 
 
 
@@ -158,17 +158,4 @@ def updateSpreadsheet():
         worksheet.update_acell("A{}".format(next_row), *cpf_list[index])
         next_row = int(next_row) + 1
 
-    """database_cursor = database.cursor()
-    database_cursor.execute("SELECT * from users")
-    print(database_cursor.fetchall())
-    sql = "DELETE FROM `users`"
-    database_cursor.execute(sql)
-
-    print(database_cursor.fetchall())
-"""
-    return print(f"docs.google.com/spreadsheets/d/" + spreadsheet_id + "/edit#gid=0")
-
-
-if __name__ == "__main__":
-    fetching_data()
-    updateSpreadsheet()
+    return f"docs.google.com/spreadsheets/d/" + spreadsheet_id + "/edit#gid=0"

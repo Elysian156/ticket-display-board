@@ -4,7 +4,7 @@ import json
 
 from models.fetchUsers import fetchUsers, getUserByCPF
 from models.createNewUser import createUser
-from models.passwords import (fetch_last_password, createPassword, fetchPasswords, fecthOnePasswordByCode, checkoutPassword, findPasswordWithPassword)
+from models.passwords import (fetch_last_password, createPassword, fetchPasswords, fecthOnePasswordByCode, checkoutPassword, findPasswordWithPassword, deletePasswords)
 from models.updateSpreadsheet import fetching_data, updateSpreadsheet
 from models.createSpreadsheet import createSpreadsheet
 
@@ -62,6 +62,7 @@ def search_user(cpf):
         }), 200
     else:
         return jsonify({'message': "Usuário não encontrado"}), 404
+
 @app.route('/api/passwords/create', methods=["POST"])
 def create_password():
     try:
@@ -187,11 +188,10 @@ def end():
             return jsonify({'message': "Ainda há pessoas para serem atendidas"}), 400
 
         createSpreadsheet()
-
         fetching_data()
-        updateSpreadsheet()
-
-        return jsonify({"link_planilha": "https://docs.google.com/spreadsheets/d/" + updateSpreadsheet() + "/edit?usp=sharing"}), 200
+        link_planilha = updateSpreadsheet()
+        deletePasswords()
+        return jsonify({"link_planilha": link_planilha}), 200
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 
