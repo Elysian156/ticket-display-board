@@ -5,6 +5,8 @@ import json
 from models.fetchUsers import fetchUsers, getUserByCPF
 from models.createNewUser import createUser
 from models.passwords import (fetch_last_password, createPassword, fetchPasswords, fecthOnePasswordByCode, checkoutPassword, findPasswordWithPassword)
+from models.updateSpreadsheet import fetching_data, updateSpreadsheet
+from models.createSpreadsheet import createSpreadsheet
 
 from utils.generate_password import generatePassword, formatPassword
 from utils.reorder_queue_by_priority import organizeQueue
@@ -60,7 +62,6 @@ def search_user(cpf):
         }), 200
     else:
         return jsonify({'message': "Usuário não encontrado"}), 404
-
 @app.route('/api/passwords/create', methods=["POST"])
 def create_password():
     try:
@@ -185,7 +186,12 @@ def end():
         if isHavePasswordInBoxes or queue:
             return jsonify({'message': "Ainda há pessoas para serem atendidas"}), 400
 
-        return jsonify({"link_planilha": "https://docs.google.com/spreadsheets/d/1kdCSm6NCydh3mfUBuYATwlRnl_hbxQYYEUoUkJ0xdT8/edit?usp=sharing"}), 200
+        createSpreadsheet()
+
+        fetching_data()
+        updateSpreadsheet()
+
+        return jsonify({"link_planilha": "https://docs.google.com/spreadsheets/d/" + updateSpreadsheet() + "/edit?usp=sharing"}), 200
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 
