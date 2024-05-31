@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCarrousel()
     updateTheme();
     styleAll(JSON.parse(localStorage.getItem('currentCall')), JSON.parse(localStorage.getItem('lastCalls')));
+    displayCurrent(JSON.parse(localStorage.getItem('currentCall')));
 });
 
 const ticketHighlight = document.querySelector(".ticket-highlight")
@@ -12,9 +13,8 @@ window.addEventListener('storage', (event) => {
     if (event.key === 'themeStorage') {
         updateTheme();
     } 
-    if(event.key === "currentCall"){
-        setTimeout(displayCurrent(JSON.parse(localStorage.getItem('currentCall'))), 1000)
-
+    else if(event.key === "currentCall"){
+       displayCurrent(JSON.parse(localStorage.getItem('currentCall')))
     }
 });
 
@@ -88,13 +88,82 @@ function isCallExistsInTable(call) {
     return false;
 }
 
-function displayCurrent(current){
-    console.log(current.name)
-    ticketHighlight.classList.add("ticket-highlight-show");
-    const audio = new Audio('../Audio/72128__kizilsungur__sweetalertsound4.wav');   
-    audio.play();
+async function displayCurrent(current){
+    if(current.called == 1) return
+
+    const audio = new Audio('../Audio/72128__kizilsungur__sweetalertsound4.wav');
+    const utternance = new SpeechSynthesisUtterance(current.name)   
+    
+    await audio.play();
+    await speechSynthesis.speak(utternance)   
+    ticketHighlight.classList.toggle("ticket-highlight-show");
+    
+
+    setColorScheme(current.eligibility_reason)
+    
+    await playVoice(current.name)
+
     setTimeout(() => {
         ticketHighlight.classList.remove("ticket-highlight-show");
     }, 5000);
 
+    let currentCall = JSON.parse(localStorage.getItem('currentCall'));
+    currentCall.called = 1
+
+    localStorage.setItem("currentCall", JSON.stringify(currentCall))
 }
+
+function playVoice(name){
+
+}
+
+
+function setColorScheme(eligibility_reason) {
+    const defaultColors = {
+        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--layout-background-color').trim(),
+        primaryColor: getComputedStyle(document.documentElement).getPropertyValue('--layout-primary-color').trim(),
+        secondaryColor: getComputedStyle(document.documentElement).getPropertyValue('--layout-secondary-color').trim(),
+        textColor: getComputedStyle(document.documentElement).getPropertyValue('--layout-text-color').trim(),
+    };
+
+    switch(eligibility_reason) {
+        case 'protanopia': 
+            document.documentElement.style.setProperty('--layout-background-color', '#a6611a');
+            document.documentElement.style.setProperty('--layout-primary-color', '#dfc27d');
+            document.documentElement.style.setProperty('--layout-secondary-color', '#80cdc1');
+            document.documentElement.style.setProperty('--layout-text-color', '#018571');
+            break;
+
+        case 'deuteranopia':
+            document.documentElement.style.setProperty('--layout-background-color', '#d7191c');
+            document.documentElement.style.setProperty('--layout-primary-color', '#fdae61');
+            document.documentElement.style.setProperty('--layout-secondary-color', '#abd9e9');
+            document.documentElement.style.setProperty('--layout-text-color', '#2c7bb6');
+            break;
+
+        case 'tritanopia':
+            document.documentElement.style.setProperty('--layout-background-color', '#a6611a');
+            document.documentElement.style.setProperty('--layout-primary-color', '#e66101');
+            document.documentElement.style.setProperty('--layout-secondary-color', '#b2abd2');
+            document.documentElement.style.setProperty('--layout-text-color', '#5e3c99');
+            break;
+
+        default:
+            break;
+    }
+
+    setTimeout(function() {
+        document.documentElement.style.setProperty('--layout-background-color', defaultColors.backgroundColor);
+        document.documentElement.style.setProperty('--layout-primary-color', defaultColors.primaryColor);
+        document.documentElement.style.setProperty('--layout-secondary-color', defaultColors.secondaryColor);
+        document.documentElement.style.setProperty('--layout-text-color', defaultColors.textColor);
+    }, 7400);
+}
+
+
+addEventListener("keydown", (event) => {
+    if (event.key === '+') {
+        console.log(localStorage.getItem("currentCall"))
+    }
+
+});

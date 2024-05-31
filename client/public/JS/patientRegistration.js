@@ -1,4 +1,4 @@
-import { registerUser, fetchUserDataByCPF, registerQueue, fetchNextQueue, checkoutPassword } from './apiCalls.js';
+import { registerUser, fetchUserDataByCPF, registerQueue, fetchNextQueue, checkoutPassword, endProcess } from './apiCalls.js';
 
 const appointmentNumber = document.querySelector(".current-appointment-number");
 const receptionNumber = document.querySelector(".current-reception-number");
@@ -12,10 +12,12 @@ const submitPatientButton = document.querySelector("#submit-patient");
 inputCpf.addEventListener('input', handleCpfInput);
 form.addEventListener('submit', handleFormSubmit);
 
-const callQueueButton = document.querySelector('.modal-options button:nth-child(1)');
-const checkoutQueueButton = document.querySelector('.modal-options button:nth-child(2)');
-const endServiceButton = document.querySelector('.modal-options button:nth-child(3)');
-const customizeButton = document.querySelector('.modal-options button:nth-child(4)');
+const callQueueButton = document.querySelector('#call-queue .modal-image');
+const checkoutQueueButton = document.querySelector('#checkout-queue .modal-image');
+const customizeButton = document.querySelector('#customize-painel .modal-image');
+const endServiceButton = document.querySelector('#end-day .modal-image');
+
+
 
 
 callQueueButton.addEventListener('click', function() {
@@ -26,6 +28,7 @@ callQueueButton.addEventListener('click', function() {
 endServiceButton.addEventListener('click', function() {
     localStorage.removeItem('currentCall');
     localStorage.removeItem('lastCalls');
+    endProcess()
     window.location.reload();
 });
 

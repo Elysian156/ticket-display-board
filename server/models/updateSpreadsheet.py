@@ -1,5 +1,5 @@
 import gspread
-from db import connectDatabase
+from models.db import connectDatabase
 import os.path
 import json
 from datetime import datetime
@@ -33,6 +33,7 @@ current_date_iso = current_date.isoformat()
 
 # Path to the JSON file
 database_file_path = '../database/spreadsheet_database.json'
+
 
 
 def fetching_data():

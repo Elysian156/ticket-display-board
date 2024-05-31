@@ -14,7 +14,7 @@
     box-sizing: border-box;
 }
 
-body{
+body {
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -24,7 +24,7 @@ body{
     overflow: hidden;
 }
 
-aside{
+aside {
     width: 40vw;
     height: 100vh;
     display: flex;
@@ -33,7 +33,7 @@ aside{
     background: var(--aside-color);
 }
 
-.counter-display{
+.counter-display {
     width: 100%;
     height: 10%;
     display: flex;
@@ -43,66 +43,54 @@ aside{
     color: #FFFFFF;
 }
 
-.counter-display div{
-    height: fit-content;
+.counter-display div {
     width: 50%;
     text-align: center;
 }
 
-.counter-display div span{
-    text-align: left;
-}
-
-.alert-condition{
+.alert-condition {
     width: 100%;
     height: 5%;
     padding: .1rem;
     display: flex;
     align-items: center;
-
     background: rgb(255, 255, 138);
     margin-bottom: 2rem;
 }
 
 table {
-    min-height: fit-content;
     width: 90%;
     border-collapse: collapse;
     margin-top: 1rem;
-    box-shadow: 0 0 8px -3px rgba(0,0,0,0.4);
+    box-shadow: 0 0 8px -3px rgba(0, 0, 0, 0.4);
     border-radius: .5rem;
 }
 
-thead tr{
-    border: 1px solid var(--layout-primary-color);
-}
 
-tr:nth-child(n + 10) {
-    border: none;
-    visibility: hidden;
-}
 
-tr:nth-child(even){
+tbody tr:nth-child(even) {
     background: rgba(var(--color1), 0.8);
+}
+
+tbody tr:nth-child(n+10) {
+    visibility: hidden;
 }
 
 th, td {
     padding: 8px;
-    text-align: left;
     text-align: center;
 }
 
 th {
     background-color: var(--background-color);
-    color: var(--layout-text-color);
-}
-td{
-    height: fit-content;
-    color: var(--layout-text-color);
+    color: var(--color2);
 }
 
+td {
+    color: var(--color2);
+}
 
-section{
+section {
     width: 70%;
     display: flex;
     align-items: center;
@@ -111,93 +99,121 @@ section{
 
 .modal-options {
     position: absolute;
-    z-index: 4;
-    padding: .5rem;
-    top: 0;
-    right: 0;
-    transform: translateX(100%);
+    z-index: 2;
+    padding: 1rem;
+    right: 0rem;
+    bottom: 5rem;
     border-radius: .5rem;
-    width: fit-content;
     display: flex;
     flex-direction: column;
+    align-items: end;
+    gap: .4rem;
+}
+
+.modal-options div {
+    transform: translateY(2rem);
+    transition: all 0.5s ease; 
+    opacity: 0;
+    transition-delay: calc(.1s * var(--i));
+    pointer-events: none;
+    display: flex;
     align-items: center;
-    gap: .2rem;
+    justify-content: center;
+    gap: .4rem;
+}
+
+div.modal-show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+.modal-image {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
     background: var(--aside-color);
-    box-shadow: 0 0 1em 0 hsla(0, 0%, 14%, 0.111);
-    transition: transform .8s ease-in-out;
+    box-shadow: 0 0 8px -3px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background .2s;
 }
 
-.modal-options button {
-    width: 100%;
+.modal-image img {
+    width: 1rem;
+    height: 1rem;
+    transition-delay: 350ms;
 }
 
-.modal-show {
-
-    transform: translateX(0);
+.modal-image:hover {
+    cursor: pointer;
+    background-color: var(--modal-color);
 }
 
-#open-configs, #close-configs{
-    width: 1.2rem;
-    height: 1.2rem;
-    filter: invert(23%) sepia(13%) saturate(1139%) hue-rotate(165deg) brightness(95%) contrast(83%);
+.modal-image:hover img {
+    filter: invert(100%) sepia(93%) saturate(0%) hue-rotate(292deg) brightness(107%) contrast(106%);
 }
 
-#open-configs:hover, #close-configs:hover{
+.open-configs {
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: .5rem;
+    right: .5rem;
+    z-index: 3;
+    background-color: var(--aside-color);
+    border-radius: 50%;
+    box-shadow: 0 0 8px -3px rgba(0, 0, 0, 0.4);
+}
+
+.open-configs #open-img {
+    width: 1.5rem;
+    height: 1.5rem;
+    transform: rotate(45deg);
+    transition: .7s;
+    transition-delay: .2s;
+}
+
+.config-is-open #open-img {
+    transform: rotate(270deg);
+    filter: invert(54%) sepia(76%) saturate(5452%) hue-rotate(335deg) brightness(104%) contrast(87%);
+}
+
+.open-configs:hover {
     cursor: pointer;
     transition: 200ms;
 }
 
-#open-configs{
-
-    position: absolute;
-    top: .5rem;
-    right: .5rem;
-    z-index: 2;
-}
-#close-configs{
-
-    margin-top: .2rem;
-}
-
-#open-configs:hover{
-    filter: invert(48%) sepia(74%) saturate(1598%) hue-rotate(192deg) brightness(91%) contrast(91%);
-}
-
-#close-configs:hover{
-    filter: invert(54%) sepia(76%) saturate(5452%) hue-rotate(335deg) brightness(104%) contrast(87%);
-}
-
-
-form{
+form {
     width: 60%;
     height: 600px;
-    min-height: fit-content;
-    min-width: fit-content;
     display: flex;
     justify-content: center;
     align-items: center;
     background: var(--aside-color);
-    box-shadow: 0 0 8px -3px rgba(0,0,0,0.4);
+    box-shadow: 0 0 8px -3px rgba(0, 0, 0, 0.4);
     border-radius: .5rem;
     padding: .5rem;
     position: relative;
 }
 
-fieldset{
+fieldset {
     width: 80%;
     display: flex;
     flex-direction: column;
     border: none;
     gap: .2rem;
-
 }
 
-form label{
-    text-align: left;
+form label {
     margin-top: .5rem;
 }
 
-form input, form select, button{
+form input, form select, button {
     height: 2.5rem;
     padding: .4rem;
     border-radius: .3rem;
@@ -205,29 +221,26 @@ form input, form select, button{
     cursor: pointer;
 }
 
-.cpf_search{
-    height: 100%;
+.cpf_search {
     display: flex;
     align-items: center;
-    
 }
 
-.cpf_search input{
-    height: 2.5rem;
+.cpf_search input {
     width: 100%;
 }
 
-.urgency-level{
+.urgency-level {
     display: flex;
     flex-wrap: wrap;
     gap: 1%;
 }
 
-input[type="radio"]{
+input[type="radio"] {
     display: none;
 }
 
-.urgency-level label{
+.urgency-level label {
     width: 49%;
     padding: .5rem;
     font-size: .8rem;
@@ -237,7 +250,6 @@ input[type="radio"]{
     border: 2px solid #e7e7e7;
     border-radius: .3rem;
     gap: .2rem;
-
 }
 
 .urgency-level label:before {
@@ -247,34 +259,33 @@ input[type="radio"]{
     border: 3px solid #e7e7e7;
     border-radius: 50%;
 }
+
 input[type="radio"]:checked + label:before {
-    background-color: var(--color3)
+    background-color: var(--radiocolor);
+
 }
+
 input[type="radio"]:checked + label {
-    background-color: var(--color3);
-    color: #ffffff;
+    background-color: var(--radiocolor);
+    border-color: var(--radiocolor);
+    color: var(--color2);
 }
-button{
+
+button {
     margin-top: 5%;
     color: #FFFFFF;
     background-color: var(--color2);
     transition: background-color 0.3s;
 }
 
-button.hidden{
+button.hidden {
     display: none;
-    visibility: hidden;
 }
 
-button:hover{
-    transition: background-color 0.3s;
+button:hover {
     background-color: var(--color3);
-
 }
 
-
-input.halfwidth, label.halfwidth, button.halfwidth{
+input.halfwidth, label.halfwidth, button.halfwidth {
     width: 50%;
 }
-
-

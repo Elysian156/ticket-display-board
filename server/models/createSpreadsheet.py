@@ -1,5 +1,5 @@
 import gspread
-from db import connectDatabase
+from models.db import connectDatabase
 import os.path
 import json
 from datetime import datetime
@@ -20,7 +20,7 @@ if not creds or not creds.valid:
         creds.refresh(Request())
     else:
         flow = InstalledAppFlow.from_client_secrets_file(
-            "credentials.json", SCOPES)
+            "credentials.json" , SCOPES)
         creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open("token.json", "w") as token:
@@ -32,7 +32,7 @@ def createSpreadsheet():
     current_date = datetime.now().date()
     data = current_date.strftime('%d-%m-%Y')
 
-    spreadsheet = gc.create("Relatório " + data, '1jvdbx2TUWA-C9zNi5RoqYWmiW1C0mqP1')
+    spreadsheet = gc.create("Relatório " + data, '1tfCkfsPHY08UdYk1LAJ_LUTqpe5D1ENe')
     spreadsheet_id = spreadsheet.id
 
     # Load existing data
