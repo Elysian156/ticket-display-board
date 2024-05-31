@@ -1,5 +1,5 @@
 import gspread
-from db import connectDatabase
+from models.db import connectDatabase
 import os.path
 import json
 from datetime import datetime
@@ -32,11 +32,11 @@ def createSpreadsheet():
     current_date = datetime.now().date()
     data = current_date.strftime('%d-%m-%Y')
 
-    spreadsheet = gc.create("Relatório " + data, '1jvdbx2TUWA-C9zNi5RoqYWmiW1C0mqP1')
+    spreadsheet = gc.create("Relatório " + data, '1lEKqKemvOkC7ZiwR1lqBYjwHJCgtss4-')
     spreadsheet_id = spreadsheet.id
 
     # Load existing data
-    database_file = Path('../database/spreadsheet_database.json')
+    database_file = Path('./database/spreadsheet_database.json')
     if os.path.exists(database_file):
         with open(database_file, 'r') as file:
             database = json.load(file)
@@ -57,6 +57,3 @@ def createSpreadsheet():
         json.dump(database, file, indent=4)
 
     print(f"New spreadsheet created with ID: {spreadsheet_id}")
-
-if __name__ == "__main__":
-    createSpreadsheet()

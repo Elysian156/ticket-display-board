@@ -125,7 +125,7 @@ export async function checkoutPassword(password) {
         }
 
         console.log('checkoutPassword(Status): %cSuccess', 'color: green');
-        return response.json();
+        return await response.json();
     } catch (error) {
         console.log(`%ccheckoutPassword(Error): ${error.message}`, 'color: red');
         throw error;

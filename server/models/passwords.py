@@ -89,3 +89,9 @@ def findPasswordWithPassword(password):
     user = databaseCursor.fetchall()[0]
   return user
 
+def deletePasswords():
+  query = "DELETE FROM `passwords`"
+  database = connectDatabase()
+  with database.cursor() as cursor:
+    cursor.execute(query)
+    database.commit()
