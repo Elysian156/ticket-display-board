@@ -32,7 +32,7 @@ def create_user():
         name = userData.get("name")
         cpf = userData.get("cpf")
         date_birthday = userData.get("date_birthday")
-        is_especial = userData.get("is_especial", False)
+        is_especial = userData.get("is_especial", False) 
         eligibility_reason = userData.get("eligibility_reason", "")
 
         if not all([name, cpf, date_birthday]):
@@ -62,21 +62,6 @@ def search_user(cpf):
         }), 200
     else:
         return jsonify({'message': "Usuário não encontrado"}), 404
-
-    userData = request.json
-
-    cpf = userData["cpf"]
-    date_birthday = userData["date_birthday"]
-    name = userData["name"]
-    is_especial = userData["is_especial"]
-    eligibility_reason = userData.get("eligibility_reason", " ")
-    isCreatedUser = createUser(name, cpf, date_birthday, is_especial, eligibility_reason)
-
-    if(isCreatedUser):
-        return jsonify({ 'message': 'Usuário cadastrado com sucesso!' }), 201
-    else:
-        return jsonify({ 'message': 'Não foi possível cadastrar o usuário' }), 400
- 
 @app.route('/api/passwords/create', methods=["POST"])
 def create_password():
     try:
@@ -132,7 +117,8 @@ def get_next_password():
         index, reception_number, fifo, boxes = reorderBoxes(data=dataJson, index=0)
 
         if lotacao == 5 or reception_number == -1:
-            return jsonify({'message': "Aguarde liberação"}), 400
+            return jsonify({'message': "Aguarde liberação"}), 200 
+        # eu mudei para 200 pq no frontend ele vai ignorar o request e mostrar a mensagem
 
         queue.pop(index)
         dataJson = {
@@ -148,7 +134,7 @@ def get_next_password():
             'appointment_number': appointment_number,
             'reception_number': reception_number,
             'name': name,
-            'eligibility_reason': eligibility_reason
+            'eligibility_reason': eligibility_reason, 
         }
         print(response_data)
         return jsonify(response_data), 200
@@ -206,6 +192,37 @@ def end():
         updateSpreadsheet()
 
         return jsonify({"link_planilha": "https://docs.google.com/spreadsheets/d/" + updateSpreadsheet() + "/edit?usp=sharing"}), 200
+    except Exception as e:
+        return jsonify({'message': str(e)}), 500
+
+@app.route('/api/passwords/peek', methods=['GET'])
+def peek_next_password():
+    try:
+        dataJson = readJson()
+        queue = dataJson["queue"]
+        boxes = dataJson["boxes"]
+
+        if not queue:
+            return jsonify({'message': "Não há ninguém na fila de espera"}), 200
+
+        lotacao = sum(1 for box in boxes if box != 0)
+        index, reception_number, fifo, _ = reorderBoxes(data=dataJson, index=0)
+
+        if lotacao == 5 or reception_number == -1:
+            return jsonify({'message': "Aguarde liberação"}), 400
+
+        appointment_number = "".join(fifo)
+        name, eligibility_reason = findPasswordWithPassword(f"{fifo[0]}.{fifo[1]}.{fifo[2]}")
+
+        response_data = {
+            'appointment_number': appointment_number,
+            'reception_number': reception_number,
+            'name': name,
+            'eligibility_reason': eligibility_reason
+        }
+
+        print(response_data)
+        return jsonify(response_data), 200
     except Exception as e:
         return jsonify({'message': str(e)}), 500
 

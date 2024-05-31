@@ -88,3 +88,4 @@ def findPasswordWithPassword(password):
     databaseCursor.execute(queryUsers)
     user = databaseCursor.fetchall()[0]
   return user
+

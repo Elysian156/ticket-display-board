@@ -4,6 +4,7 @@
     --background-color: #E1F1FD;
     --color1: 243, 248, 255;
     --color2: #242424;
+    --color3: #4189e0;
     --aside-color: #FFFFFF;
 }
 
@@ -20,6 +21,7 @@ body{
     align-items: center;
     font-family: "Poppins", sans-serif;
     background: var(--background-color);
+    overflow: hidden;
 }
 
 aside{
@@ -59,7 +61,7 @@ aside{
 }
 
 table {
-    height: fit-content;
+    min-height: fit-content;
     width: 90%;
     border-collapse: collapse;
     margin-top: 1rem;
@@ -95,11 +97,69 @@ td{
     color: var(--layout-text-color);
 }
 
+
 section{
     width: 70%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
+}
+
+.modal-options{
+    position: absolute;
+    z-index: 4;
+    padding: .5rem;
+    top: 0;
+    right: 0;
+    transform: translateX(+100%);
+    border-radius: .5rem;
+    background: var(--aside-color);
+    box-shadow: 0 0 1em 0 hsla(0, 0%, 14%, 0.111);
+
+}
+
+.modal-options button{
+    width: 100%;
+}
+
+.modal-show{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .2rem;
+    transition: 1s;
+    transform: translateX(0);
+}
+
+#open-configs, #close-configs{
+    width: 1.2rem;
+    height: 1.2rem;
+    filter: invert(23%) sepia(13%) saturate(1139%) hue-rotate(165deg) brightness(95%) contrast(83%);
+}
+
+#open-configs:hover, #close-configs:hover{
+    cursor: pointer;
+    transition: 200ms;
+}
+
+#open-configs{
+
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    z-index: 2;
+}
+#close-configs{
+
+    margin-top: .2rem;
+}
+
+#open-configs:hover{
+    filter: invert(48%) sepia(74%) saturate(1598%) hue-rotate(192deg) brightness(91%) contrast(91%);
+}
+
+#close-configs:hover{
+    filter: invert(54%) sepia(76%) saturate(5452%) hue-rotate(335deg) brightness(104%) contrast(87%);
 }
 
 
@@ -115,7 +175,7 @@ form{
     box-shadow: 0 0 8px -3px rgba(0,0,0,0.4);
     border-radius: .5rem;
     padding: .5rem;
-
+    position: relative;
 }
 
 fieldset{
@@ -124,6 +184,7 @@ fieldset{
     flex-direction: column;
     border: none;
     gap: .2rem;
+
 }
 
 form label{
@@ -143,27 +204,12 @@ form input, form select, button{
     height: 100%;
     display: flex;
     align-items: center;
-    position: relative;
     
 }
 
 .cpf_search input{
     height: 2.5rem;
     width: 100%;
-}
-.cpf_search img{
-    position: absolute;
-    right: .4rem;
-    z-index: 2;
-    width: 20px;
-    height: 20px;
-
-}
-
-.cpf_search img:hover{
-    cursor: pointer;
-    transition: 200ms;
-    filter: invert(48%) sepia(74%) saturate(1598%) hue-rotate(192deg) brightness(91%) contrast(91%);
 }
 
 .urgency-level{
@@ -197,22 +243,33 @@ input[type="radio"]{
     border-radius: 50%;
 }
 input[type="radio"]:checked + label:before {
-    background-color: #4189e0;
+    background-color: var(--color3)
 }
 input[type="radio"]:checked + label {
-    background-color: #4189e0;
+    background-color: var(--color3);
     color: #ffffff;
 }
 button{
     margin-top: 5%;
     color: #FFFFFF;
     background-color: var(--color2);
+    transition: background-color 0.3s;
 }
+
 button.hidden{
     display: none;
     visibility: hidden;
 }
 
+button:hover{
+    transition: background-color 0.3s;
+    background-color: var(--color3);
+
+}
+
+
 input.halfwidth, label.halfwidth, button.halfwidth{
     width: 50%;
 }
+
+

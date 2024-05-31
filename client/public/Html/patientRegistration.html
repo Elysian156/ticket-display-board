@@ -34,16 +34,20 @@
                 </tr> -->
             </tbody>
         </table>
+
+
     </aside>
     <section>
         <form class="patient-registration-form">
+            <img src="../Images/definicoes.svg" id="open-configs"> 
+
             <fieldset>
                 <h2>Registro de Pacientes</h2>
                 <!-- Validar se o CPF já existe e completar outros campos se for o caso, adicionar mascara de input -->
                 <label for="cpf">CPF:</label>
                 <div class="cpf_search">
                     <input type="text" name="cpf" id="cpf" placeholder="Digite o CPF" required maxlength="14" class="maskcpf">
-                    <img src="../Images/pesquisar-alt.svg" alt="" id="search-cpf">
+                    <!-- <img src="../Images/pesquisar-alt.svg" alt="" id="search-cpf"> -->
                 </div>
 
     
@@ -103,16 +107,32 @@
 
                 </div>
                 
-                <button type="submit" id="submit-patient">Cadastrar Paciente</button>
-                <button id="submit-queue" class="hidden">Gerar Senha</button>
+                <button type="submit" id="submit-patient" data-hover-color="#41e066">Cadastrar Paciente</button>
+                <button id="submit-queue" class="hidden" data-hover-color="#41e066">Gerar Senha</button>
             
 
             </fieldset>
         </form>
     </section>
 
+
+    <div class="modal-options">
+            <button data-hover-color="#41e066">Chamar na fila</button>
+            <button data-hover-color="#e0c141">Checkout na fila</button>
+            <button data-hover-color=" #e04158">Encerrar serviço</button>
+            <button data-hover-color="#8e41e0">Customização</button>
+            <img src="../Images/cruz.svg" id="close-configs"> 
+    </div>
+
+
     <img src="" alt="" id="">
     <script src="../JS/patientRegistration.js" type="module"></script>
     <script src="../JS/inputMasks.js"></script>
+    <script>
+        const modal = document.querySelector(".modal-options")
+        document.querySelector("#open-configs").addEventListener("click", e => modal.classList.toggle("modal-show"))
+        document.querySelector("#close-configs").addEventListener("click", e => modal.classList.toggle("modal-show"))
+
+    </script>
 </body>
 </html>

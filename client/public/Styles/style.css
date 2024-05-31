@@ -34,15 +34,7 @@ aside{
     gap: 1rem;
 }
 
-table {
-    height: fit-content;
-    width: 90%;
-    border-collapse: collapse;
-    box-shadow: 0 0 8px -3px rgba(0, 0, 0, 0.4);
-    border-radius: .5rem;
-}
-
-aside h3{
+aside h4{
     font-size: 1rem;
     color: var(--layout-text-color);
 
@@ -53,8 +45,17 @@ aside h3{
     height: 120px;
 }
 
-thead tr {
-    background:  var(--layout-primary-color);
+table {
+    min-height: fit-content;
+    width: 90%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    box-shadow: 0 0 8px -3px rgba(0,0,0,0.4);
+    border-radius: .5rem;
+}
+
+thead tr{
+    border: 1px solid var(--layout-primary-color);
 }
 
 tr:nth-child(n + 10) {
@@ -62,14 +63,13 @@ tr:nth-child(n + 10) {
     visibility: hidden;
 }
 
-/* tr:nth-child(even) {
+tr:nth-child(even){
+    background: rgba(var(--color1), 0.8);
+}
 
-} */
-
-th,
-td,
-tr {
-    padding: .5rem;
+th, td {
+    padding: 8px;
+    text-align: left;
     text-align: center;
 }
 
@@ -77,10 +77,8 @@ th {
     background-color: var(--background-color);
     color: var(--layout-text-color);
 }
-
-td {
+td{
     height: fit-content;
-    font-size: .7rem;
     color: var(--layout-text-color);
 }
 
@@ -147,15 +145,28 @@ section{
     height: 100vh;
     background-color: var(--layout-primary-color);
     align-items: center;
-    justify-content: space-around;
-    flex-direction: row;
+    justify-content: center;
+    flex-direction: column;
     bottom: -100vh;
     transition: 2s;
     position: absolute;
-    color: white;
+    color: var(--layout-text-color);
     h1{
         font-size: 8rem;
     }
+    h2{
+        font-size: 4rem;
+    }
+}
+
+.ticket-highlight div{
+    width: 80%;
+}
+
+.queue-display{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .ticket-highlight-show{

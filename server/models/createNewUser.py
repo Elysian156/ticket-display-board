@@ -7,6 +7,7 @@ def createUser(name, cpf, date_birthday, is_especial, eligibility_reason):
     """
     try:
         with database.cursor() as cursor:
+            print()
             cursor.execute(query, (name, cpf, date_birthday, is_especial, eligibility_reason))
             database.commit()
         return True
