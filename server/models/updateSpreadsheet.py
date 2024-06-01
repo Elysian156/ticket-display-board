@@ -35,6 +35,7 @@ current_date_iso = current_date.isoformat()
 database_file_path = './database/spreadsheet_database.json'
 
 
+
 def fetching_data():
     database_cursor = database.cursor()
     database_cursor.execute('SELECT * FROM users')

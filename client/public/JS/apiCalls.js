@@ -13,7 +13,7 @@ export async function registerUser(data) {
         }
 
         console.log('registerUser(Status): %cSuccess', 'color: green');
-        return response.json();
+        return await response.json();
     } catch (error) {
         console.log(`%cregisterUser(Error): ${error.message}`, 'color: red');
         throw error;
@@ -36,7 +36,7 @@ export async function fetchUserDataByCPF(cpf) {
         }
 
         console.log('FetchUserDataByCPF(Status): %cSuccess', 'color: green');
-        return response.json();
+        return await response.json();
     } catch (error) {
         console.log(`%cFetchUserDataByCPF(Error): ${error.message}`, 'color: red');
         throw error;
@@ -59,7 +59,7 @@ export async function fetchUserDataById(userId) {
         }
 
         console.log('FetchUserDataById(Status): %cSuccess', 'color: green');
-        return response.json();
+        return await response.json();
     } catch (error) {
         console.log(`%cFetchUserDataById(Error): ${error.message}`, 'color: red');
         throw error;
@@ -81,7 +81,7 @@ export async function registerQueue(data) {
         }
 
         console.log('registerQueue(Status): %cSuccess', 'color: green');
-        return response.json();
+        return await response.json();
     } catch (error) {
         console.log(`%cregisterQueue(Error): ${error.message}`, 'color: red');
         throw error;
@@ -104,7 +104,7 @@ export async function fetchNextQueue() {
         }
 
         console.log('FetchNextQueue(Status): %cSuccess', 'color: green');
-        return response; 
+        return await response; 
     } catch (error) {
         console.log(`%cFetchNextQueue(Error): ${error.message}`, 'color: red');
         throw error;
@@ -148,7 +148,7 @@ export async function fetchAllPasswords() {
         }
 
         console.log('fetchAllPasswords(Status): %cSuccess', 'color: green');
-        return response.json();
+        return await response.json();
     } catch (error) {
         console.log(`%cfetchAllPasswords(Error): ${error.message}`, 'color: red');
         throw error;
@@ -171,9 +171,31 @@ export async function peekNextPassword() {
         }
 
         console.log('peekNextPassword(Status): %cSuccess', 'color: green');
-        return response.json();
+        return await response.json();
     } catch (error) {
         console.log(`%cpeekNextPassword(Error): ${error.message}`, 'color: red');
+        throw error;
+    }
+}
+
+export async function endProcess() {
+    try {
+        const response = await fetch('http://localhost:5000/api/passwords/end', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Network response was not ok');
+        }
+
+        console.log('endProcess(Status): %cSuccess', 'color: green');
+        return await response.json();
+    } catch (error) {
+        console.log(`%cendProcess(Error): ${error.message}`, 'color: red');
         throw error;
     }
 }

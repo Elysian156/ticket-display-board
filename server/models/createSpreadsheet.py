@@ -20,7 +20,7 @@ if not creds or not creds.valid:
         creds.refresh(Request())
     else:
         flow = InstalledAppFlow.from_client_secrets_file(
-            "credentials.json", SCOPES)
+            "credentials.json" , SCOPES)
         creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open("token.json", "w") as token:
@@ -32,11 +32,11 @@ def createSpreadsheet():
     current_date = datetime.now().date()
     data = current_date.strftime('%d-%m-%Y')
 
-    spreadsheet = gc.create("Relatório " + data, '1lEKqKemvOkC7ZiwR1lqBYjwHJCgtss4-')
+    spreadsheet = gc.create("Relatório " + data, '1tfCkfsPHY08UdYk1LAJ_LUTqpe5D1ENe')
     spreadsheet_id = spreadsheet.id
 
     # Load existing data
-    database_file = Path('./database/spreadsheet_database.json')
+    database_file = Path('../database/spreadsheet_database.json')
     if os.path.exists(database_file):
         with open(database_file, 'r') as file:
             database = json.load(file)
@@ -57,3 +57,6 @@ def createSpreadsheet():
         json.dump(database, file, indent=4)
 
     print(f"New spreadsheet created with ID: {spreadsheet_id}")
+
+if __name__ == "__main__":
+    createSpreadsheet()

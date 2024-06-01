@@ -59,6 +59,7 @@ thead tr{
 }
 
 tr:nth-child(n + 10) {
+    display: none;
     border: none;
     visibility: hidden;
 }
@@ -148,7 +149,7 @@ section{
     justify-content: center;
     flex-direction: column;
     bottom: -100vh;
-    transition: 2s;
+    transition: 2s ease-in-out;
     position: absolute;
     color: var(--layout-text-color);
     h1{

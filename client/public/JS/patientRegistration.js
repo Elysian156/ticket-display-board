@@ -1,4 +1,4 @@
-import { registerUser, fetchUserDataByCPF, registerQueue, fetchNextQueue, checkoutPassword } from './apiCalls.js';
+import { registerUser, fetchUserDataByCPF, registerQueue, fetchNextQueue, checkoutPassword, endProcess } from './apiCalls.js';
 
 const appointmentNumber = document.querySelector(".current-appointment-number");
 const receptionNumber = document.querySelector(".current-reception-number");
@@ -12,56 +12,45 @@ const submitPatientButton = document.querySelector("#submit-patient");
 inputCpf.addEventListener('input', handleCpfInput);
 form.addEventListener('submit', handleFormSubmit);
 
-const callQueueButton = document.querySelector('.modal-options button:nth-child(1)');
-const checkoutQueueButton = document.querySelector('.modal-options button:nth-child(2)');
-const endServiceButton = document.querySelector('.modal-options button:nth-child(3)');
-const customizeButton = document.querySelector('.modal-options button:nth-child(4)');
+const callQueueButton = document.querySelector('#call-queue .modal-image');
+const checkoutQueueButton = document.querySelector('#checkout-queue .modal-image');
+const customizeButton = document.querySelector('#customize-painel .modal-image');
+const endServiceButton = document.querySelector('#end-day .modal-image');
 
+callQueueButton.addEventListener('click', fetchQueueDataAndApply);
 
-callQueueButton.addEventListener('click', function() {
-    fetchQueueDataAndApply();
-});
-
-
-endServiceButton.addEventListener('click', function() {
+endServiceButton.addEventListener('click', () => {
     localStorage.removeItem('currentCall');
     localStorage.removeItem('lastCalls');
-    window.location.reload();
+    endProcess();
+    updateDisplay();
 });
 
-customizeButton.addEventListener('click', function() {
+customizeButton.addEventListener('click', () => {
     window.open('./UserConfig.html');
 });
 
-
-checkoutQueueButton.addEventListener('click', async function() {
+checkoutQueueButton.addEventListener('click', async () => {
     let lastCalls = JSON.parse(localStorage.getItem('lastCalls'));
     let foundIndex = lastCalls.findIndex(call => call.is_attended !== 1);
 
     if (foundIndex !== -1) {
         try {
             alert('Senha mais antiga: ' + lastCalls[foundIndex].appointment_number);
+
             lastCalls[foundIndex].is_attended = 1;
             localStorage.setItem('lastCalls', JSON.stringify(lastCalls));
 
             const response = await checkoutPassword(lastCalls[foundIndex].appointment_number);
             console.log('Senha checked out successfully', response);
-            
-            // Atualiza e salva no localStorage após a conclusão da função assíncrona
 
-            
         } catch (error) {
-            console.error('Error checking out password:', error);
+            console.error('Erro ao registrar saída da senha:', error);
         }
     } else {
-        console.log('No previous calls found');
+        console.log('Nenhuma chamada anterior encontrada');
     }
 });
-
-function updateAttendance(lastCalls, foundIndex) {
-
-}
-
 
 function clearFormFields() {
     document.querySelector("#name").value = '';
@@ -77,7 +66,7 @@ async function handleCpfInput() {
             const data = await fetchUserDataByCPF(inputValue);
             populateForm(data);
         } catch (error) {
-            console.log('Error fetching user data:', error);
+            console.log('Erro ao buscar dados do usuário:', error);
             alert("Paciente não Cadastrado");
             clearFormFields();
         }
@@ -143,7 +132,7 @@ async function handleQueueSubmit(id, isEspecial) {
             console.log('Queue registered successfully:');
             alert('Senha gerada com sucesso');
         } catch (error) {
-            console.log('Error registering queue:', error);
+            console.log('Erro ao registrar fila:', error);
         }
     } else {
         alert("Selecione o nível de urgência");
@@ -151,24 +140,23 @@ async function handleQueueSubmit(id, isEspecial) {
 }
 
 let currentCall = null;
-
 function fetchQueueDataAndApply() {
     fetchNextQueue()
         .then(response => {
             if (!response.ok) {
-                throw new Error('Could not retrieve the data');
+                throw new Error('Não foi possível recuperar os dados');
             }
             return response.json();
         })
         .then(data => {
             if (data.message) {
                 alert(data.message);
-                console.log('Ignoring message:', data.message);
+                console.log('Ignorando mensagem:', data.message);
                 return;
             }
 
-            console.log('Queue data successfully applied:', data);
-            data.is_attended = 0
+            console.log('Dados da fila aplicados com sucesso:', data);
+            data.is_attended = 0;
             if (localStorage.getItem('currentCall')) {
                 let lastCalls = JSON.parse(localStorage.getItem('lastCalls')) || [];
                 lastCalls.push(JSON.parse(localStorage.getItem('currentCall')));
@@ -178,13 +166,10 @@ function fetchQueueDataAndApply() {
             localStorage.setItem('currentCall', JSON.stringify(data));
             currentCall = data;
 
-            const event = new CustomEvent('queueDataApplied', { detail: { currentCall: data, lastCalls: lastCalls } });
-            document.dispatchEvent(event);
-
-            styleAll(currentCall, JSON.parse(localStorage.getItem('lastCalls')));
+            updateDisplay();
         })
         .catch(error => {
-            console.error('Error retrieving and applying data:', error);
+            console.error('Erro ao recuperar e aplicar dados:', error);
         });
 }
 
@@ -201,25 +186,26 @@ function toggleSubmitButtons(showQueueButton) {
 addEventListener("keydown", (event) => {
     if (event.key === '+') {
         fetchQueueDataAndApply();
-    }
-    else if(event.key === '*'){
+    } else if (event.key === '*') {
         console.log(JSON.parse(localStorage.getItem('currentCall')));
         console.log(JSON.parse(localStorage.getItem('lastCalls')));
-    }
-    if (event.key === '-') {
+    } else if (event.key === '-') {
         localStorage.removeItem('currentCall');
         localStorage.removeItem('lastCalls');
-        window.location.reload();
+        updateDisplay();
     }
 });
+
+function updateDisplay() {
+    styleAll(JSON.parse(localStorage.getItem('currentCall')), JSON.parse(localStorage.getItem('lastCalls')));
+}
 
 function styleAll(current, previousCalls) {
     if (!current) return;
 
     document.querySelector('.current-reception-number').textContent = current.reception_number; 
-    document.querySelector('.current-appointment-number').textContent = current.appointment_number
-    document.querySelector('.alert-condition').textContent = current.eligibility_reason
-
+    document.querySelector('.current-appointment-number').textContent = current.appointment_number;
+    if (current.eligibility_reason) document.querySelector('.alert-condition').textContent = "ATENÇÃO! paciente com " + current.eligibility_reason;
 
     const tableBody = document.querySelector('.table-body');
 
@@ -227,7 +213,6 @@ function styleAll(current, previousCalls) {
         previousCalls.reverse();
 
         previousCalls.forEach(call => {
-            // Verificar se a chamada já existe na tabela
             if (!isCallExistsInTable(call)) {
                 const tr = document.createElement('tr');
 
@@ -240,7 +225,7 @@ function styleAll(current, previousCalls) {
                 tr.appendChild(senhaTd);
                 tr.appendChild(guicheTd);
 
-                tableBody.insertBefore(tr, tableBody.firstChild); // Adicionar antes do primeiro elemento existente
+                tableBody.insertBefore(tr, tableBody.firstChild);
             }
         });
     } else {
@@ -248,7 +233,6 @@ function styleAll(current, previousCalls) {
     }
 }
 
-// Função auxiliar para verificar se a chamada já existe na tabela
 function isCallExistsInTable(call) {
     const tableRows = document.querySelectorAll('.table-body tr');
     for (let i = 0; i < tableRows.length; i++) {
@@ -261,12 +245,8 @@ function isCallExistsInTable(call) {
     return false;
 }
 
-
 function initializeApp() {
-    
-    window.addEventListener('load', function() {
-        styleAll(JSON.parse(localStorage.getItem('currentCall')), JSON.parse(localStorage.getItem('lastCalls')));
-    });
+    window.addEventListener('load', updateDisplay);
 }
 
 initializeApp();
