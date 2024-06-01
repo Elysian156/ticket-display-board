@@ -76,17 +76,25 @@ function isCallExistsInTable(call) {
 }
 
 function displayCurrent(current) {
-    if (current.called == 1) return;
+    if (current.called > 1) return;
     const audio = new Audio('../Audio/72128__kizilsungur__sweetalertsound4.wav');
     const utternance = new SpeechSynthesisUtterance(current.name);
+    
+    let gambiarra = 0;
+    // Literalmente resolvendo com uma gambiarra: usando movimento do mouse para garantir interação do usuário
+    window.addEventListener("mousemove", () => {
+        if (gambiarra < 1) {
+            audio.play();
+            speechSynthesis.speak(utternance);
+            gambiarra += 1;
+        }
+    });
 
-    audio.play();
-    speechSynthesis.speak(utternance);
     Highlightticket();
     setColorScheme(current.eligibility_reason);
 
     let currentCall = JSON.parse(localStorage.getItem('currentCall'));
-    currentCall.called = 1;
+    currentCall.called += 1;
     localStorage.setItem("currentCall", JSON.stringify(currentCall));
 }
 

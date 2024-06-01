@@ -45,10 +45,10 @@ checkoutQueueButton.addEventListener('click', async () => {
             console.log('Senha checked out successfully', response);
 
         } catch (error) {
-            console.error('Error checking out password:', error);
+            console.error('Erro ao registrar saída da senha:', error);
         }
     } else {
-        console.log('No previous calls found');
+        console.log('Nenhuma chamada anterior encontrada');
     }
 });
 
@@ -66,7 +66,7 @@ async function handleCpfInput() {
             const data = await fetchUserDataByCPF(inputValue);
             populateForm(data);
         } catch (error) {
-            console.log('Error fetching user data:', error);
+            console.log('Erro ao buscar dados do usuário:', error);
             alert("Paciente não Cadastrado");
             clearFormFields();
         }
@@ -132,7 +132,7 @@ async function handleQueueSubmit(id, isEspecial) {
             console.log('Queue registered successfully:');
             alert('Senha gerada com sucesso');
         } catch (error) {
-            console.log('Error registering queue:', error);
+            console.log('Erro ao registrar fila:', error);
         }
     } else {
         alert("Selecione o nível de urgência");
@@ -144,18 +144,18 @@ function fetchQueueDataAndApply() {
     fetchNextQueue()
         .then(response => {
             if (!response.ok) {
-                throw new Error('Could not retrieve the data');
+                throw new Error('Não foi possível recuperar os dados');
             }
             return response.json();
         })
         .then(data => {
             if (data.message) {
                 alert(data.message);
-                console.log('Ignoring message:', data.message);
+                console.log('Ignorando mensagem:', data.message);
                 return;
             }
 
-            console.log('Queue data successfully applied:', data);
+            console.log('Dados da fila aplicados com sucesso:', data);
             data.is_attended = 0;
             if (localStorage.getItem('currentCall')) {
                 let lastCalls = JSON.parse(localStorage.getItem('lastCalls')) || [];
@@ -169,7 +169,7 @@ function fetchQueueDataAndApply() {
             updateDisplay();
         })
         .catch(error => {
-            console.error('Error retrieving and applying data:', error);
+            console.error('Erro ao recuperar e aplicar dados:', error);
         });
 }
 
