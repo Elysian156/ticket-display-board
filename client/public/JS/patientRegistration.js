@@ -140,7 +140,6 @@ async function handleQueueSubmit(id, isEspecial) {
 }
 
 let currentCall = null;
-
 function fetchQueueDataAndApply() {
     fetchNextQueue()
         .then(response => {
